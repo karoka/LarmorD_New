@@ -280,7 +280,7 @@ int main (int argc, char **argv){
 												}                          
 											}
 										}
-										cspred = cspred + randcs;
+										cspred += randcs;
 										if(print_error)
 										{
 											weight = larm->getAccuracyWeight(nucleus);
@@ -379,8 +379,9 @@ int main (int argc, char **argv){
 											cspred = cspred + alpha.at(m)*pow(dist,beta.at(m));
 										}
 									}
-								}
-							}							
+								}								
+							}
+							cspred += randcs;							
 							if(print_error)
 							{
 								weight = larm->getAccuracyWeight(nucleus);

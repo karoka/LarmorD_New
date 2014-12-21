@@ -284,7 +284,6 @@ int main (int argc, char **argv){
 										if(print_error)
 										{
 											weight = larm->getAccuracyWeight(nucleus);
-											cspred = cspred + randcs;
 											error = cspred - expcs;
 											error_mae += fabs(error);
 											error_rmse += (error*error);
@@ -385,7 +384,6 @@ int main (int argc, char **argv){
 							if(print_error)
 							{
 								weight = larm->getAccuracyWeight(nucleus);
-								cspred = cspred + randcs;
 								error = cspred - expcs;
 								error_mae += fabs(error);
 								error_rmse += (error*error);

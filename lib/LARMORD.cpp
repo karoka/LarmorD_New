@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 
-LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile)
+LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, bool residueBased)
 {
     /* nuclei for which chemical shifts will be calculated */
     this->initializeShiftAtoms();    
@@ -28,6 +28,7 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
         //std::cout << "done with reference shifts..." << std::endl;      
     }
     
+    this->residueBasedLarmor = residueBased;
     
     /* the accuracy weights for calculating errors */
     if (faccfile.length()==0){
@@ -44,8 +45,7 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     } else {
         this->loadParmFile(fparmfile);
         //std::cout << "done with parameters..." << std::endl;
-    }        
-    
+    }            
     
     /* rename residue */
     if (mol != NULL){
@@ -55,7 +55,8 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     if (fchemshift.length() > 0){
         this->loadCSFile(fchemshift);
         //std::cout << "done with chemical shifts..." << std::endl;
-    }    
+    }
+        
 }
 
 std::vector<double> LARMORD::getAlpha(const std::string &key)
@@ -110,51 +111,62 @@ void LARMORD::loadCSFile(const std::string fchemshift)
 
 void LARMORD::loadParmFile(const std::string fparmfile)
 {
-    std::ifstream parmFile;
-    std::istream* parminp;
-    std::string line, key;
-    std::vector<std::string> s;
-    double alpha;
-    int beta;
-    std::vector <double> alphas_;
-    std::vector <int> betas_;
-    if (fparmfile.length() > 0){
-        parmFile.open(fparmfile.c_str(), std::ios::in);
-        parminp=&parmFile;
-        while (parminp->good() && !(parminp->eof())){
-            getline(*parminp, line);
-            Misc::splitStr(line, " ", s, true);            
-            if (s.size() >=  4){
-            		key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2));                        
-                alpha = atof(Misc::trim(s.at(3)).c_str());
-                if (this->alphas.count(key) > 0 ){
-                	//std::cout << "I am here" << std::endl;
-                	alphas_.clear();
-                	this->alphas.at(key).push_back(alpha);
-                }
-                else {
-                  alphas_.clear();
-                	alphas_.push_back(alpha);
-                	this->alphas.insert(std::pair<std::string,std::vector<double> >(key,alphas_));
-                }                
-            }
-            if (s.size() >  4){
-                key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2));                        
-                beta = atoi(Misc::trim(s.at(4)).c_str());
-                if (this->betas.count(key) > 0 ){
-                	betas_.clear();
-                	this->betas.at(key).push_back(beta);
-                }
-                else {
-                  betas_.clear();
-                	betas_.push_back(beta);
-                	this->betas.insert(std::pair<std::string,std::vector<int> >(key,betas_));
-                }                
-            }  
-            //std::cout << key << " alpha " << this->alphas.at(key).size() << std::endl;                      
-            //std::cout << key << " beta " << this->betas.at(key).size() << std::endl;                      
-        }
-    }
+	std::ifstream parmFile;
+	std::istream* parminp;
+	std::string line, key;
+	std::vector<std::string> s;
+	double alpha;
+	int beta;
+	std::vector <double> alphas_;
+	std::vector <int> betas_;
+	if (fparmfile.length() > 0){
+		parmFile.open(fparmfile.c_str(), std::ios::in);
+		parminp=&parmFile;
+		while (parminp->good() && !(parminp->eof())){
+			getline(*parminp, line);
+			Misc::splitStr(line, " ", s, true);            
+			if (s.size() ==  6){
+				if (this->residueBasedLarmor){
+					key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+				}
+				else {
+					key = Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+				}
+				
+				alpha = atof(Misc::trim(s.at(4)).c_str());
+				//std::cout << "LARMOR " << key << " " << alpha << std::endl;
+				if (this->alphas.count(key) > 0 ){
+					//std::cout << "I am here" << std::endl;
+					alphas_.clear();
+					this->alphas.at(key).push_back(alpha);
+				}
+				else {
+					alphas_.clear();
+					alphas_.push_back(alpha);
+					this->alphas.insert(std::pair<std::string,std::vector<double> >(key,alphas_));
+				}                
+
+				if (this->residueBasedLarmor){
+					key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+				}
+				else {
+					key = Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+				}
+				beta = atoi(Misc::trim(s.at(5)).c_str());
+				if (this->betas.count(key) > 0 ){
+					betas_.clear();
+					this->betas.at(key).push_back(beta);
+				}
+				else {
+					betas_.clear();
+					betas_.push_back(beta);
+					this->betas.insert(std::pair<std::string,std::vector<int> >(key,betas_));
+				}                                
+			}
+			//std::cout << key << " alpha " << this->alphas.at(key).size() << std::endl;                      
+			//std::cout << key << " beta " << this->betas.at(key).size() << std::endl;                      
+		}
+	}
 }
 
 void LARMORD::loadRefFile(const std::string freffile)
@@ -178,22 +190,28 @@ void LARMORD::loadRefFile(const std::string freffile)
 
 void LARMORD::loadAccFile(const std::string faccfile)
 {
-    std::ifstream accFile;
-    std::istream* accinp;
-    std::string line;
-    std::vector<std::string> s;
-    if (faccfile.length() > 0){
-        accFile.open(faccfile.c_str(), std::ios::in);
-        accinp=&accFile;
-        while (accinp->good() && !(accinp->eof())){
-            getline(*accinp, line);
-            Misc::splitStr(line, " ", s, true);
-            if (s.size() ==  2){
-                this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0)),atof(Misc::trim(s.at(1)).c_str())));
-                //std::cout << "Accuracy Weights " << Misc::trim(s.at(0)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;
-            }
-        }
-    }
+	std::ifstream accFile;
+	std::istream* accinp;
+	std::string line;
+	std::vector<std::string> s;
+	if (faccfile.length() > 0){
+		accFile.open(faccfile.c_str(), std::ios::in);
+		accinp=&accFile;
+		while (accinp->good() && !(accinp->eof())){
+			getline(*accinp, line);
+			Misc::splitStr(line, " ", s, true);
+			if (s.size() ==  3){
+				if (this->residueBasedLarmor){
+					this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)),atof(Misc::trim(s.at(2)).c_str())));
+					//std::cout << "Accuracy Weights " << Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;
+				} 
+				else {
+					this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0)),atof(Misc::trim(s.at(2)).c_str())));
+					//std::cout << "Accuracy Weights " << Misc::trim(s.at(0)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;							
+				}
+			}
+		}
+	}
 }
 
 int LARMORD::getNShiftAtoms()

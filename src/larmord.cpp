@@ -34,6 +34,7 @@ void usage(){
   std::cerr << "         [-accfile ACCfile]" << std::endl;
   std::cerr << "         [-cutoff CUToff]" << std::endl;
   std::cerr << "         [-printError]" << std::endl;
+  std::cerr << "         [-residueBased]" << std::endl;  
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
   std::cerr << "         [-identification ID]" << std::endl;
@@ -59,6 +60,7 @@ int main (int argc, char **argv){
   std::string key;
   std::string identification;
   bool print_error;
+  bool residue_based;
 
   std::vector<std::string> trajs;
   int start;
@@ -98,6 +100,7 @@ int main (int argc, char **argv){
   identification="None";
   cutoff=99999.9;
   print_error = false;
+  residue_based = false;
   
   LARMORD *larm;
   larm=NULL;
@@ -125,6 +128,11 @@ int main (int argc, char **argv){
       currArg=argv[++i];
       freffile=currArg;
     }
+    else if (currArg.compare("-residueBased") == 0 )
+    {
+				residue_based=true;
+    }    
+
     else if (currArg.compare("-printError") == 0 )
     {
 			if(fchemshift.length() > 0)
@@ -200,7 +208,7 @@ int main (int argc, char **argv){
     /* instantiate LARMORD */
     mol=Molecule::readPDB(pdbs.at(0));
     mol->selAll();
-    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile);
+    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based);
     
     /* Process trajectories */
     for (itrj=0; itrj< trajs.size(); itrj++)
@@ -260,17 +268,22 @@ int main (int argc, char **argv){
                 {
 									key = resname+":"+nucleus;
 									randcs = larm->getRandomShift(key);
-									if(randcs > 0)
+									if(randcs != 0.0 )
 									{
 										ainx = ai->getAtmInx();
 										for (unsigned int l=0; l < neighbormol->getAtmVecSize(); l++)
 										{
 											aj = neighbormol->getAtom(l);
 											if(ai!=aj){
-												resname = aj->getResName();
-												atomname = aj->getAtmName();
-												alpha = larm->getAlpha(nucleus+":"+aj->getResName()+":"+aj->getAtmName());
-												beta = larm->getBeta(nucleus+":"+aj->getResName()+":"+aj->getAtmName());
+												if (residue_based)
+												{
+													key = resname+":"+nucleus+":"+aj->getResName()+":"+aj->getAtmName();
+												}
+												else {
+													key = nucleus+":"+aj->getResName()+":"+aj->getAtmName();
+												}
+												alpha = larm->getAlpha(key);
+												beta = larm->getBeta(key);                    
 												dist = neighborDistances.at(ainx).at(aj->getAtmInx());
 												if (dist < cutoff){
 													for (unsigned int m = 0; m < alpha.size(); m++)
@@ -283,7 +296,15 @@ int main (int argc, char **argv){
 										cspred += randcs;
 										if(print_error)
 										{
-											weight = larm->getAccuracyWeight(nucleus);
+											if (residue_based)
+											{
+												key = nucleus+":"+resname;
+											}
+											else 
+											{
+												key = nucleus;
+											}
+											weight = larm->getAccuracyWeight(key);
 											error = cspred - expcs;
 											error_mae += fabs(error);
 											error_rmse += (error*error);
@@ -323,7 +344,7 @@ int main (int argc, char **argv){
     for (f=0; f< pdbs.size(); f++)
     {  
       mol=Molecule::readPDB(pdbs.at(f));
-      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile);
+      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based);
       //std::cerr << "Processing file \"" << pdbs.at(f) << "..." << std::endl;
       /* get distance matrix */
       mol->assignAtmInx();
@@ -359,21 +380,28 @@ int main (int argc, char **argv){
           {
 						key = resname+":"+nucleus;
 						randcs = larm->getRandomShift(key);
-						if(randcs > 0)
+						//std::cout << key << " " << randcs << std::endl;
+						if(randcs != 0.0)
 						{
 							ainx = ai->getAtmInx();
 							for (unsigned int l=0; l < neighbormol->getAtmVecSize(); l++){
 								aj = neighbormol->getAtom(l);
 								if(ai!=aj){
-									resname = aj->getResName();
-									atomname = aj->getAtmName();
-									alpha = larm->getAlpha(nucleus+":"+aj->getResName()+":"+aj->getAtmName());
-									beta = larm->getBeta(nucleus+":"+aj->getResName()+":"+aj->getAtmName());                    
+									if (residue_based)
+									{
+										key = resname+":"+nucleus+":"+aj->getResName()+":"+aj->getAtmName();
+									}
+									else {
+										key = nucleus+":"+aj->getResName()+":"+aj->getAtmName();
+									}
+									alpha = larm->getAlpha(key);
+									beta = larm->getBeta(key);									
 									dist = neighborDistances.at(ainx).at(aj->getAtmInx());
 									if (dist < cutoff)
 									{
 										for (unsigned int m = 0; m < alpha.size(); m++)
 										{
+											//std::cout << key << " " << alpha.at(m) << " " << beta.at(m) << std::endl;                    
 											//std::cout << nucleus+":"+aj->getResName()+":"+aj->getAtmName() << " " << alpha.at(m) << " " << beta.at(m) << " " << randcs << std::endl;
 											cspred = cspred + alpha.at(m)*pow(dist,beta.at(m));
 										}
@@ -383,7 +411,15 @@ int main (int argc, char **argv){
 							cspred += randcs;							
 							if(print_error)
 							{
-								weight = larm->getAccuracyWeight(nucleus);
+								if (residue_based)
+								{
+									key = nucleus+":"+resname;
+								}
+								else 
+								{
+									key = nucleus;
+								}
+								weight = larm->getAccuracyWeight(key);							
 								error = cspred - expcs;
 								error_mae += fabs(error);
 								error_rmse += (error*error);

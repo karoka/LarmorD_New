@@ -9,6 +9,7 @@
 */
 
 #include "Molecule.hpp"
+#include "Residue.hpp"
 #include "Atom.hpp"
 #include "Analyze.hpp"
 #include "LARMORD.hpp"
@@ -20,6 +21,7 @@
 #include <limits>
 #include <sstream>
 #include <math.h>
+#include <algorithm>
 
 
 void usage(){
@@ -34,6 +36,8 @@ void usage(){
   std::cerr << "         [-accfile ACCfile]" << std::endl;
   std::cerr << "         [-cutoff CUToff]" << std::endl;
   std::cerr << "         [-printError]" << std::endl;
+  std::cerr << "         [-residueSelection]" << std::endl;
+  std::cerr << "         [-nucleusSelection]" << std::endl;
   std::cerr << "         [-residueBased]" << std::endl;  
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
@@ -61,6 +65,12 @@ int main (int argc, char **argv){
   std::string identification;
   bool print_error;
   bool residue_based;
+  std::string residue_select;
+  std::string nucleus_select;
+  std::vector<int> selected_residues;
+  std::vector<std::string> selected_nuclei;
+  bool isResidue;
+  bool isNucleus;
 
   std::vector<std::string> trajs;
   int start;
@@ -101,11 +111,17 @@ int main (int argc, char **argv){
   cutoff=99999.9;
   print_error = false;
   residue_based = false;
+  residue_select = "";
+  nucleus_select = "";
   
   LARMORD *larm;
   larm=NULL;
 
   pdbs.clear();
+  selected_residues.clear();
+  selected_nuclei.clear();
+  isResidue = true;
+  isResidue = true;
 
   for (i=1; i<argc; i++){
     currArg=argv[i];
@@ -144,7 +160,17 @@ int main (int argc, char **argv){
 					std::cerr << "Warning: -printError is valid only when a chemical shifts data file is suppled via --csfile " << std::endl;
 					print_error=false;
 			}      
-    }    
+    }
+    else if (currArg.compare("-residueSelection") == 0 )
+    {
+      currArg=argv[++i];    
+			residue_select=currArg;			
+    }      
+    else if (currArg.compare("-nucleusSelection") == 0 )
+    {
+      currArg=argv[++i];    
+			nucleus_select=currArg;
+    }                
     else if (currArg.compare("-accfile") == 0 || currArg.compare("-a") == 0 )
     {
       currArg=argv[++i];
@@ -198,6 +224,39 @@ int main (int argc, char **argv){
   }
   
   Molecule *mol=NULL;
+
+  if (residue_select.length() != 0 || nucleus_select.length() != 0){
+		Molecule *cmol;
+		cmol = Molecule::readPDB(pdbs.at(0));
+		
+		if (residue_select.length() != 0){
+			cmol->select(residue_select);
+			neighbormol=cmol->copy(true);	
+			Residue *res;
+			selected_residues.clear();
+	
+			for (unsigned int j=0; j< neighbormol->getResVecSize(); j++)
+			{
+				res=neighbormol->getResidue(j);
+				selected_residues.push_back(res->getResId());
+			}
+		}
+
+		if (nucleus_select.length() != 0){
+			cmol->select(nucleus_select);
+			neighbormol=cmol->copy(true);	
+			Atom *atm;
+			selected_nuclei.clear();			
+			for (unsigned int j=0; j< neighbormol->getAtmVecSize(); j++)
+			{
+				atm=neighbormol->getAtom(j);
+				if (std::find(selected_nuclei.begin(),selected_nuclei.end(),atm->getAtmName()) == selected_nuclei.end()){
+					selected_nuclei.push_back(atm->getAtmName());
+				}					
+			}
+		}
+	}
+  
   if (trajs.size() > 0)
   {
     if (pdbs.size() > 1)
@@ -209,7 +268,7 @@ int main (int argc, char **argv){
     mol=Molecule::readPDB(pdbs.at(0));
     mol->selAll();
     larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based);
-    
+        
     /* Process trajectories */
     for (itrj=0; itrj< trajs.size(); itrj++)
     {
@@ -239,6 +298,7 @@ int main (int argc, char **argv){
             mol->selAll();
             Analyze::pairwiseDistance(mol, neighborDistances);
 
+            
             mol->select(":.HEAVY");
             neighbormol= mol->copy();
 
@@ -264,11 +324,13 @@ int main (int argc, char **argv){
                 cspred = 0.0;
                 expcs = larm->getExperimentalCS(key);
                 //std::cerr << " I am here " << key << " " << expcs << std::endl;
-                if(fchemshift.length() == 0 || expcs != 0.0)
-                {
+								isResidue = std::find(selected_residues.begin(),selected_residues.end(),ai->getResId())!= selected_residues.end();
+								isNucleus = std::find(selected_nuclei.begin(),selected_nuclei.end(),ai->getAtmName()) != selected_nuclei.end();
+								if( (fchemshift.length() == 0 || expcs != 0.0) && (selected_residues.size() == 0 || isResidue) && (selected_nuclei.size() == 0 || isNucleus) )
+								{
 									key = resname+":"+nucleus;
 									randcs = larm->getRandomShift(key);
-									if(randcs != 0.0 )
+									if(randcs != 0.0)
 									{
 										ainx = ai->getAtmInx();
 										for (unsigned int l=0; l < neighbormol->getAtmVecSize(); l++)
@@ -345,6 +407,7 @@ int main (int argc, char **argv){
     {  
       mol=Molecule::readPDB(pdbs.at(f));
       larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based);
+      
       //std::cerr << "Processing file \"" << pdbs.at(f) << "..." << std::endl;
       /* get distance matrix */
       mol->assignAtmInx();
@@ -371,12 +434,13 @@ int main (int argc, char **argv){
         {
           resname = ai->getResName();
           resid << ai->getResId();
-          key = resid.str()+":"+nucleus;
-          resid.str("");
+          key = resid.str()+":"+nucleus;  
+          resid.str("");        
           cspred = 0.0;
           expcs = larm->getExperimentalCS(key);
-          //std::cerr << " I am here " << key << " " << expcs << std::endl;
-          if(fchemshift.length() == 0 || expcs != 0.0)
+          isResidue = std::find(selected_residues.begin(),selected_residues.end(),ai->getResId())!= selected_residues.end();
+          isNucleus = std::find(selected_nuclei.begin(),selected_nuclei.end(),ai->getAtmName()) != selected_nuclei.end();
+          if( (fchemshift.length() == 0 || expcs != 0.0) && (selected_residues.size() == 0 || isResidue) && (selected_nuclei.size() == 0 || isNucleus) )
           {
 						key = resname+":"+nucleus;
 						randcs = larm->getRandomShift(key);
@@ -433,7 +497,7 @@ int main (int argc, char **argv){
 							}
 						}
           }
-        }
+        }        
       }
       if (print_error)
       {

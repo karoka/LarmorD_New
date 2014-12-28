@@ -28,6 +28,7 @@ class LARMORD {
          std::map<std::string, std::vector < double>  > alphas;
          std::map<std::string,std::vector < int> > betas;
          std::map<std::string,double> experimentalCS; 
+         std::map<std::string,double> errorCS; 
          std::map<std::string,double> accuracy_weight;
          bool residueBasedLarmor; 
     public:
@@ -41,6 +42,7 @@ class LARMORD {
         std::vector<double> getAlpha (const std::string &key);
         std::vector<int> getBeta (const std::string &key);
         double getExperimentalCS(const std::string &key);
+        double getErrorCS(const std::string &key);
         double getAccuracyWeight(const std::string &key);
         int getNShiftAtoms();
         void renameRes(Molecule *mol);

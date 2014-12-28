@@ -102,8 +102,9 @@ void LARMORD::loadCSFile(const std::string fchemshift)
         while (csinp->good() && !(csinp->eof())){
             getline(*csinp, line);
             Misc::splitStr(line, " ", s, true);
-            if (s.size() >= 4){
+            if (s.size() == 5){
                 this->experimentalCS.insert(std::pair<std::string,double>(Misc::trim(s.at(1))+":"+Misc::trim(s.at(2)),atof(Misc::trim(s.at(3)).c_str())));
+                this->errorCS.insert(std::pair<std::string,double>(Misc::trim(s.at(1))+":"+Misc::trim(s.at(2)),atof(Misc::trim(s.at(4)).c_str())));
             }
         }
     }
@@ -232,6 +233,15 @@ double LARMORD::getExperimentalCS(const std::string &key)
 {
     if (this->experimentalCS.find (key) != this->experimentalCS.end()){
         return this->experimentalCS.at(key);
+    } else {
+        return 0.0;
+    }
+}
+
+double LARMORD::getErrorCS(const std::string &key)
+{
+    if (this->errorCS.find (key) != this->errorCS.end()){
+        return this->errorCS.at(key);
     } else {
         return 0.0;
     }

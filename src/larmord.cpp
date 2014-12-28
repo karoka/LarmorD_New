@@ -93,7 +93,7 @@ int main (int argc, char **argv){
   double randcs;
   double expcs;
   double cutoff;
-  double error, error_mae, error_rmse, error_wmae, error_wrmse, weight;
+  double error, error_mae, error_rmse, error_wmae, error_wrmse, weight, errorCS;
 
   std::vector<std::vector<double> > neighborDistances;
 
@@ -304,6 +304,7 @@ int main (int argc, char **argv){
 
 						if (print_error)
 						{
+							errorCS = 0.0;
 							error_mae = 0.0;
 							error_rmse = 0.0;
 							error_wmae = 0.0;
@@ -323,6 +324,7 @@ int main (int argc, char **argv){
                 resid.str("");
                 cspred = 0.0;
                 expcs = larm->getExperimentalCS(key);
+                errorCS = larm->getErrorCS(key);
                 //std::cerr << " I am here " << key << " " << expcs << std::endl;
 								isResidue = std::find(selected_residues.begin(),selected_residues.end(),ai->getResId())!= selected_residues.end();
 								isNucleus = std::find(selected_nuclei.begin(),selected_nuclei.end(),ai->getAtmName()) != selected_nuclei.end();
@@ -367,7 +369,7 @@ int main (int argc, char **argv){
 												key = nucleus;
 											}
 											weight = larm->getAccuracyWeight(key);
-											error = cspred - expcs;
+											error = (cspred - expcs) + errorCS;
 											error_mae += fabs(error);
 											error_rmse += (error*error);
 											error_wmae += weight*fabs(error);
@@ -419,6 +421,7 @@ int main (int argc, char **argv){
       
       if (print_error)
       {
+				errorCS = 0.0;
 				error_mae = 0.0;
 				error_rmse = 0.0;
 				error_wmae = 0.0;
@@ -438,6 +441,7 @@ int main (int argc, char **argv){
           resid.str("");        
           cspred = 0.0;
           expcs = larm->getExperimentalCS(key);
+          errorCS = larm->getErrorCS(key);
           isResidue = std::find(selected_residues.begin(),selected_residues.end(),ai->getResId())!= selected_residues.end();
           isNucleus = std::find(selected_nuclei.begin(),selected_nuclei.end(),ai->getAtmName()) != selected_nuclei.end();
           if( (fchemshift.length() == 0 || expcs != 0.0) && (selected_residues.size() == 0 || isResidue) && (selected_nuclei.size() == 0 || isNucleus) )
@@ -484,7 +488,7 @@ int main (int argc, char **argv){
 									key = nucleus;
 								}
 								weight = larm->getAccuracyWeight(key);							
-								error = cspred - expcs;
+								error = (cspred - expcs ) + errorCS;
 								error_mae += fabs(error);
 								error_rmse += (error*error);
 								error_wmae += weight*fabs(error);

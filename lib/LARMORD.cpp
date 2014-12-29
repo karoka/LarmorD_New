@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 
-LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, bool residueBased)
+LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, bool residueBased, bool mismatchCheck)
 {
     /* nuclei for which chemical shifts will be calculated */
     this->initializeShiftAtoms();    
@@ -29,6 +29,7 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     }
     
     this->residueBasedLarmor = residueBased;
+    this->mismatchCheckLarmor = mismatchCheck;
     
     /* the accuracy weights for calculating errors */
     if (faccfile.length()==0){
@@ -53,9 +54,11 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     }    
     /* load chemical shifts from file */
     if (fchemshift.length() > 0){
-        this->loadCSFile(fchemshift);
+        this->loadCSFile(fchemshift,mol);
         //std::cout << "done with chemical shifts..." << std::endl;
     }
+    
+    
         
 }
 
@@ -90,24 +93,48 @@ double LARMORD::getRandomShift(const std::string &key)
     }
 }
 
-void LARMORD::loadCSFile(const std::string fchemshift)
+void LARMORD::loadCSFile(const std::string fchemshift, Molecule *mol)
 {
-    std::ifstream csFile;
-    std::istream* csinp;
-    std::string line;
-    std::vector<std::string> s;
-    if (fchemshift.length() > 0){
-        csFile.open(fchemshift.c_str(), std::ios::in);
-        csinp=&csFile;
-        while (csinp->good() && !(csinp->eof())){
-            getline(*csinp, line);
-            Misc::splitStr(line, " ", s, true);
-            if (s.size() == 5){
-                this->experimentalCS.insert(std::pair<std::string,double>(Misc::trim(s.at(1))+":"+Misc::trim(s.at(2)),atof(Misc::trim(s.at(3)).c_str())));
-                this->errorCS.insert(std::pair<std::string,double>(Misc::trim(s.at(1))+":"+Misc::trim(s.at(2)),atof(Misc::trim(s.at(4)).c_str())));
-            }
-        }
-    }
+	std::ifstream csFile;
+	std::istream* csinp;
+	std::string line, resname, nucleus, resid, key;
+	std::vector<std::string> s;
+	
+	if (fchemshift.length() > 0){
+		csFile.open(fchemshift.c_str(), std::ios::in);
+		csinp=&csFile;
+		if (csFile.is_open()) {
+			while (csinp->good() && !(csinp->eof())){
+				getline(*csinp, line);
+				Misc::splitStr(line, " ", s, true);											
+				if (s.size() == 5){
+					resname = Misc::trim(s.at(0));
+					resid = Misc::trim(s.at(1));
+					nucleus = Misc::trim(s.at(2));
+					key = resid+":"+resname+":"+nucleus;
+			
+					if (this->mismatchCheckLarmor) {
+						mol->select(":"+resid+".+:"+resname+".+:."+nucleus,false,false);
+						if (mol->getNAtomSelected()==0){
+							std::cerr << "Warning: Mismatch between sequence in Molecule and CS file: " << ":"+resid+".+:"+resname+".+:."+nucleus << std::endl;	
+						}
+						else {
+							this->experimentalCS.insert(std::pair<std::string,double>(key,atof(Misc::trim(s.at(3)).c_str())));
+							this->errorCS.insert(std::pair<std::string,double>(key,atof(Misc::trim(s.at(4)).c_str())));						
+						}
+					}	
+					else {			
+						this->experimentalCS.insert(std::pair<std::string,double>(key,atof(Misc::trim(s.at(3)).c_str())));
+						this->errorCS.insert(std::pair<std::string,double>(key,atof(Misc::trim(s.at(4)).c_str())));
+					}
+				}
+			}
+		} 
+		else {
+			std::cerr << "Error: Unable to open file: " << fchemshift << std::endl;	
+			exit(0);
+		}
+	}
 }
 
 void LARMORD::loadParmFile(const std::string fparmfile)
@@ -123,70 +150,84 @@ void LARMORD::loadParmFile(const std::string fparmfile)
 	if (fparmfile.length() > 0){
 		parmFile.open(fparmfile.c_str(), std::ios::in);
 		parminp=&parmFile;
-		while (parminp->good() && !(parminp->eof())){
-			getline(*parminp, line);
-			Misc::splitStr(line, " ", s, true);            
-			if (s.size() ==  6){
-				if (this->residueBasedLarmor){
-					key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
-				}
-				else {
-					key = Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
-				}
+		if (parmFile.is_open()){
+			while (parminp->good() && !(parminp->eof()))
+			{
+				getline(*parminp, line);
+				Misc::splitStr(line, " ", s, true);            
+				if (s.size() ==  6){
+					if (this->residueBasedLarmor){
+						key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+					}
+					else {
+						key = Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+					}
 				
-				alpha = atof(Misc::trim(s.at(4)).c_str());
-				//std::cout << "LARMOR " << key << " " << alpha << std::endl;
-				if (this->alphas.count(key) > 0 ){
-					//std::cout << "I am here" << std::endl;
-					alphas_.clear();
-					this->alphas.at(key).push_back(alpha);
-				}
-				else {
-					alphas_.clear();
-					alphas_.push_back(alpha);
-					this->alphas.insert(std::pair<std::string,std::vector<double> >(key,alphas_));
-				}                
+					alpha = atof(Misc::trim(s.at(4)).c_str());
+					//std::cout << "LARMOR " << key << " " << alpha << std::endl;
+					if (this->alphas.count(key) > 0 ){
+						//std::cout << "I am here" << std::endl;
+						alphas_.clear();
+						this->alphas.at(key).push_back(alpha);
+					}
+					else {
+						alphas_.clear();
+						alphas_.push_back(alpha);
+						this->alphas.insert(std::pair<std::string,std::vector<double> >(key,alphas_));
+					}                
 
-				if (this->residueBasedLarmor){
-					key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+					if (this->residueBasedLarmor){
+						key = Misc::trim(s.at(0))+":"+Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+					}
+					else {
+						key = Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
+					}
+					beta = atoi(Misc::trim(s.at(5)).c_str());
+					if (this->betas.count(key) > 0 ){
+						betas_.clear();
+						this->betas.at(key).push_back(beta);
+					}
+					else {
+						betas_.clear();
+						betas_.push_back(beta);
+						this->betas.insert(std::pair<std::string,std::vector<int> >(key,betas_));
+					}                                
 				}
-				else {
-					key = Misc::trim(s.at(1))+":"+Misc::trim(s.at(2))+":"+Misc::trim(s.at(3));
-				}
-				beta = atoi(Misc::trim(s.at(5)).c_str());
-				if (this->betas.count(key) > 0 ){
-					betas_.clear();
-					this->betas.at(key).push_back(beta);
-				}
-				else {
-					betas_.clear();
-					betas_.push_back(beta);
-					this->betas.insert(std::pair<std::string,std::vector<int> >(key,betas_));
-				}                                
+				//std::cout << key << " alpha " << this->alphas.at(key).size() << std::endl;                      
+				//std::cout << key << " beta " << this->betas.at(key).size() << std::endl;                      
 			}
-			//std::cout << key << " alpha " << this->alphas.at(key).size() << std::endl;                      
-			//std::cout << key << " beta " << this->betas.at(key).size() << std::endl;                      
+		}
+		else {
+			std::cerr << "Error: Unable to open file: " << fparmfile << std::endl;	
+			exit(0);		
 		}
 	}
 }
 
 void LARMORD::loadRefFile(const std::string freffile)
 {
-    std::ifstream refFile;
-    std::istream* refinp;
-    std::string line;
-    std::vector<std::string> s;
-    if (freffile.length() > 0){
-        refFile.open(freffile.c_str(), std::ios::in);
-        refinp=&refFile;
-        while (refinp->good() && !(refinp->eof())){
-            getline(*refinp, line);
-            Misc::splitStr(line, " ", s, true);
-            if (s.size() ==  3){
-                this->randomShifts.insert(std::pair<std::string,double>(Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)),atof(Misc::trim(s.at(2)).c_str())));
-            }
-        }
-    }
+	std::ifstream refFile;
+	std::istream* refinp;
+	std::string line;
+	std::vector<std::string> s;
+	if (freffile.length() > 0){
+		refFile.open(freffile.c_str(), std::ios::in);
+		refinp=&refFile;
+		if (refFile.is_open()) {
+			while (refinp->good() && !(refinp->eof()))
+			{
+				getline(*refinp, line);
+				Misc::splitStr(line, " ", s, true);
+				if (s.size() ==  3){
+						this->randomShifts.insert(std::pair<std::string,double>(Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)),atof(Misc::trim(s.at(2)).c_str())));
+				}
+			}
+		}
+		else {
+			std::cerr << "Error: Unable to open file: " << freffile << std::endl;	
+			exit(0);		                
+		}
+	}
 }
 
 void LARMORD::loadAccFile(const std::string faccfile)
@@ -198,19 +239,26 @@ void LARMORD::loadAccFile(const std::string faccfile)
 	if (faccfile.length() > 0){
 		accFile.open(faccfile.c_str(), std::ios::in);
 		accinp=&accFile;
-		while (accinp->good() && !(accinp->eof())){
-			getline(*accinp, line);
-			Misc::splitStr(line, " ", s, true);
-			if (s.size() ==  3){
-				if (this->residueBasedLarmor){
-					this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)),atof(Misc::trim(s.at(2)).c_str())));
-					//std::cout << "Accuracy Weights " << Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;
-				} 
-				else {
-					this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0)),atof(Misc::trim(s.at(2)).c_str())));
-					//std::cout << "Accuracy Weights " << Misc::trim(s.at(0)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;							
+		if (accFile.is_open()){
+			while (accinp->good() && !(accinp->eof()))
+			{
+				getline(*accinp, line);
+				Misc::splitStr(line, " ", s, true);
+				if (s.size() ==  3){
+					if (this->residueBasedLarmor){
+						this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)),atof(Misc::trim(s.at(2)).c_str())));
+						//std::cout << "Accuracy Weights " << Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;
+					} 
+					else {
+						this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0)),atof(Misc::trim(s.at(2)).c_str())));
+						//std::cout << "Accuracy Weights " << Misc::trim(s.at(0)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;							
+					}
 				}
 			}
+		}
+		else {
+			std::cerr << "Error: Unable to open file: " << faccfile << std::endl;	
+			exit(0);		                			
 		}
 	}
 }

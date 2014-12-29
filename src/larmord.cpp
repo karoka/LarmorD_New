@@ -39,6 +39,7 @@ void usage(){
   std::cerr << "         [-residueSelection]" << std::endl;
   std::cerr << "         [-nucleusSelection]" << std::endl;
   std::cerr << "         [-residueBased]" << std::endl;  
+  std::cerr << "         [-mismatchCheck]" << std::endl;  
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
   std::cerr << "         [-identification ID]" << std::endl;
@@ -71,6 +72,7 @@ int main (int argc, char **argv){
   std::vector<std::string> selected_nuclei;
   bool isResidue;
   bool isNucleus;
+  bool mismatchCheck;
 
   std::vector<std::string> trajs;
   int start;
@@ -122,6 +124,7 @@ int main (int argc, char **argv){
   selected_nuclei.clear();
   isResidue = true;
   isResidue = true;
+  mismatchCheck = false;
 
   for (i=1; i<argc; i++){
     currArg=argv[i];
@@ -148,7 +151,10 @@ int main (int argc, char **argv){
     {
 				residue_based=true;
     }    
-
+    else if (currArg.compare("-mismatchCheck") == 0 )
+    {
+				mismatchCheck=true;
+    }    
     else if (currArg.compare("-printError") == 0 )
     {
 			if(fchemshift.length() > 0)
@@ -267,7 +273,7 @@ int main (int argc, char **argv){
     /* instantiate LARMORD */
     mol=Molecule::readPDB(pdbs.at(0));
     mol->selAll();
-    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based);
+    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,mismatchCheck);
         
     /* Process trajectories */
     for (itrj=0; itrj< trajs.size(); itrj++)
@@ -320,12 +326,12 @@ int main (int argc, char **argv){
               {
                 resname = ai->getResName();
                 resid << ai->getResId();
-                key = resid.str()+":"+nucleus;
+                key = resid.str()+":"+resname+":"+nucleus;
                 resid.str("");
                 cspred = 0.0;
                 expcs = larm->getExperimentalCS(key);
-                errorCS = larm->getErrorCS(key);
-                //std::cerr << " I am here " << key << " " << expcs << std::endl;
+                errorCS = larm->getErrorCS(key);                
+                
 								isResidue = std::find(selected_residues.begin(),selected_residues.end(),ai->getResId())!= selected_residues.end();
 								isNucleus = std::find(selected_nuclei.begin(),selected_nuclei.end(),ai->getAtmName()) != selected_nuclei.end();
 								if( (fchemshift.length() == 0 || expcs != 0.0) && (selected_residues.size() == 0 || isResidue) && (selected_nuclei.size() == 0 || isNucleus) )
@@ -408,7 +414,7 @@ int main (int argc, char **argv){
     for (f=0; f< pdbs.size(); f++)
     {  
       mol=Molecule::readPDB(pdbs.at(f));
-      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based);
+      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,mismatchCheck);
       
       //std::cerr << "Processing file \"" << pdbs.at(f) << "..." << std::endl;
       /* get distance matrix */
@@ -437,7 +443,7 @@ int main (int argc, char **argv){
         {
           resname = ai->getResName();
           resid << ai->getResId();
-          key = resid.str()+":"+nucleus;  
+          key = resid.str()+":"+resname+":"+nucleus;  
           resid.str("");        
           cspred = 0.0;
           expcs = larm->getExperimentalCS(key);

@@ -353,6 +353,8 @@ void LARMORD::renameRes(Molecule *mol)
     mol->renameAtom("H5'1","H5'");
     /* H5'2 => H5'' */
     mol->renameAtom("H5'2","H5''");
+    /* HN => H */
+    mol->renameAtom("HN","H");
     //mol->writePDB();
 }
 

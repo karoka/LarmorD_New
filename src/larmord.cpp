@@ -384,7 +384,7 @@ int main (int argc, char **argv){
 										} 
 										else 
 										{                               
-											std::cout << 0 << " " << nframe << " " << ai->getResId() << " " << ai->getResName() << " " << nucleus << " " << cspred << " " << expcs << " " <<  randcs << " " << identification << std::endl;
+											std::cout << 0 << " " << i << " " << ai->getResId() << " " << ai->getResName() << " " << nucleus << " " << cspred << " " << expcs << " " <<  randcs << " " << identification << std::endl;
 										}                      
 									}
                 }
@@ -392,7 +392,7 @@ int main (int argc, char **argv){
             }
 						if (print_error)
 						{
-							std::cout << 0 << " " << nframe << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " << identification << std::endl;
+							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " << identification << std::endl;
 						}            
           }
         }

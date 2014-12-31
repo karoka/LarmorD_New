@@ -437,6 +437,15 @@ void Molecule::renameRes(const std::vector<std::string> &search, const std::stri
   }
 }
 
+void Molecule::renameRes(int resid, const std::string &search, const std::string &replace){
+  for (unsigned int i=0; i< this->getAtmVecSize(); i++){
+    Atom *atm=this->getAtom(i);    
+    if (atm->getResId() == resid && atm->getResName() == search ){
+      atm->setResName(replace);
+    }
+  }
+}
+
 void Molecule::readTopology(const std::string& topin){
   this->toppar.readTopology(topin);
   this->setMass();

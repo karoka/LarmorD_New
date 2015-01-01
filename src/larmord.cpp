@@ -51,7 +51,7 @@ int main (int argc, char **argv){
   int i;
   unsigned int f;
   unsigned int ainx;
-  unsigned int counter;
+  unsigned int counter = 0;
   std::stringstream resid;
   std::vector<std::string> pdbs;
   std::string currArg;
@@ -95,7 +95,13 @@ int main (int argc, char **argv){
   double randcs;
   double expcs;
   double cutoff;
-  double error, error_mae, error_rmse, error_wmae, error_wrmse, weight, errorCS;
+  double error= 0.0;
+  double error_mae=0.0;
+  double error_rmse=0.0;
+  double error_wmae=0.0;
+  double error_wrmse=0.0;
+  double weight=0.0;
+  double errorCS=0.0;
 
   std::vector<std::vector<double> > neighborDistances;
 

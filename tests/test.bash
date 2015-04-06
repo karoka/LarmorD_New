@@ -18,3 +18,20 @@ echo " "
 -printError \
 -cutoff 9999.0 2ADT.pdb
 
+echo "2LX1 test shifts"
+../bin/larmord  -csfile measured_shifts_2LX1.dat \
+-parmfile ../data/larmorD_alphas_betas_rna.dat \
+-reffile ../data/larmorD_reference_shifts_rna.dat \
+-accfile ../data/larmorD_accuracy_weight_rna.dat \
+-cutoff 9999.0 2LX1.pdb
+
+echo " "
+echo "2LX1 test error"
+../bin/larmord  -csfile measured_shifts_2LX1.dat \
+-parmfile ../data/larmorD_alphas_betas_rna.dat \
+-reffile ../data/larmorD_reference_shifts_rna.dat \
+-accfile ../data/larmorD_accuracy_weight_rna.dat \
+-printError \
+-cutoff 9999.0 2LX1.pdb
+
+

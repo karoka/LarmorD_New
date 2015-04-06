@@ -386,7 +386,7 @@ int main (int argc, char **argv){
 											error_rmse += (error*error);
 											error_wmae += weight*fabs(error);
 											error_wrmse += weight*weight*(error*error);
-											counter++; 
+											counter++; 											
 										} 
 										else 
 										{                               

@@ -250,7 +250,7 @@ void LARMORD::loadAccFile(const std::string faccfile)
 						//std::cout << "Accuracy Weights " << Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;
 					} 
 					else {
-						this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0)),atof(Misc::trim(s.at(2)).c_str())));
+						this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(1)),atof(Misc::trim(s.at(2)).c_str())));
 						//std::cout << "Accuracy Weights " << Misc::trim(s.at(0)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;							
 					}
 				}

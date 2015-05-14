@@ -31,9 +31,10 @@ class LARMORD {
          std::map<std::string,double> errorCS; 
          std::map<std::string,double> accuracy_weight;
          bool residueBasedLarmor;
+         bool residueBasedWeightsLarmor;
          bool mismatchCheckLarmor; 
     public:
-        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="",bool residueBased=false, bool mismatchCheck=false);
+        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="",bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false);
         void initializeShiftAtoms();
         void initializeRandomShifts();
         void initializeAlpha();

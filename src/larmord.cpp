@@ -38,7 +38,7 @@ void usage(){
   std::cerr << "         [-printError]" << std::endl;
   std::cerr << "         [-residueSelection]" << std::endl;
   std::cerr << "         [-nucleusSelection]" << std::endl;
-  std::cerr << "         [-residueBased]" << std::endl;  
+  std::cerr << "         [-residueBasedWeights]" << std::endl;  
   std::cerr << "         [-mismatchCheck]" << std::endl;  
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
@@ -66,6 +66,7 @@ int main (int argc, char **argv){
   std::string identification;
   bool print_error;
   bool residue_based;
+  bool residue_based_weights;
   std::string residue_select;
   std::string nucleus_select;
   std::vector<int> selected_residues;
@@ -100,6 +101,8 @@ int main (int argc, char **argv){
   double error_rmse=0.0;
   double error_wmae=0.0;
   double error_wrmse=0.0;
+  double error_flat_chi2=0.0;
+  double chi2_c=2.98;
   double weight=0.0;
   double errorCS=0.0;
 
@@ -119,6 +122,7 @@ int main (int argc, char **argv){
   cutoff=99999.9;
   print_error = false;
   residue_based = false;
+  residue_based_weights =false;
   residue_select = "";
   nucleus_select = "";
   
@@ -156,6 +160,10 @@ int main (int argc, char **argv){
     else if (currArg.compare("-residueBased") == 0 )
     {
 				residue_based=true;
+    }    
+    else if (currArg.compare("-residueBasedWeights") == 0 )
+    {
+				residue_based_weights=true;
     }    
     else if (currArg.compare("-mismatchCheck") == 0 )
     {
@@ -279,7 +287,7 @@ int main (int argc, char **argv){
     /* instantiate LARMORD */
     mol=Molecule::readPDB(pdbs.at(0));
     mol->selAll();
-    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,mismatchCheck);
+    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,residue_based_weights,mismatchCheck);
         
     /* Process trajectories */
     for (itrj=0; itrj< trajs.size(); itrj++)
@@ -321,6 +329,7 @@ int main (int argc, char **argv){
 							error_rmse = 0.0;
 							error_wmae = 0.0;
 							error_wrmse = 0.0;
+							error_flat_chi2 = 0.0;
 							counter = 0;
 						}
             
@@ -372,7 +381,7 @@ int main (int argc, char **argv){
 										cspred += randcs;
 										if(print_error)
 										{
-											if (residue_based)
+											if (residue_based || residue_based_weights)
 											{
 												key = nucleus+":"+resname;
 											}
@@ -386,6 +395,7 @@ int main (int argc, char **argv){
 											error_rmse += (error*error);
 											error_wmae += weight*fabs(error);
 											error_wrmse += weight*weight*(error*error);
+											error_flat_chi2 += (1 - exp(-(pow((weight*error/chi2_c),2))));
 											counter++; 											
 										} 
 										else 
@@ -398,7 +408,7 @@ int main (int argc, char **argv){
             }
 						if (print_error)
 						{
-							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " << identification << std::endl;
+							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter)<< " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << identification << std::endl;
 						}            
           }
         }
@@ -420,7 +430,7 @@ int main (int argc, char **argv){
     for (f=0; f< pdbs.size(); f++)
     {  
       mol=Molecule::readPDB(pdbs.at(f));
-      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,mismatchCheck);
+      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,residue_based_weights,mismatchCheck);
       
       //std::cerr << "Processing file \"" << pdbs.at(f) << "..." << std::endl;
       /* get distance matrix */
@@ -438,6 +448,7 @@ int main (int argc, char **argv){
 				error_rmse = 0.0;
 				error_wmae = 0.0;
 				error_wrmse = 0.0;
+				error_flat_chi2 = 0.0;
 				counter = 0;
       }
       
@@ -491,7 +502,7 @@ int main (int argc, char **argv){
 							cspred += randcs;							
 							if(print_error)
 							{
-								if (residue_based)
+								if (residue_based || residue_based_weights)
 								{
 									key = nucleus+":"+resname;
 								}
@@ -505,6 +516,7 @@ int main (int argc, char **argv){
 								error_rmse += (error*error);
 								error_wmae += weight*fabs(error);
 								error_wrmse += weight*weight*(error*error);
+								error_flat_chi2 += (1 - exp(-(pow((weight*error/chi2_c),2))));
 								counter++; 
 							} 
 							else 
@@ -517,7 +529,7 @@ int main (int argc, char **argv){
       }
       if (print_error)
       {
-      	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " << identification << std::endl;
+      	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << identification << std::endl;
       }
       delete mol;
     }

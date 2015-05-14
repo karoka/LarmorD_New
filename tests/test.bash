@@ -34,4 +34,22 @@ echo "2LX1 test error"
 -printError \
 -cutoff 9999.0 2LX1.pdb
 
+echo " "
+echo "A003 test error residue- and nucleus-based weights"
+../bin/larmord  -csfile measured_shifts_A003.dat \
+-parmfile ../data/larmorD_proteins_alphas_betas_cutoff_5.dat \
+-reffile ../data/larmorD_proteins_reference_shifts_cutoff_5.dat \
+-accfile ../data/larmorD_proteins_residue_accuracy_cutoff_5.dat \
+-printError -residueBasedWeights \
+-cutoff 5 A003.pdb
+
+echo " "
+echo "A003 test error nucleus-based weights"
+../bin/larmord  -csfile measured_shifts_A003.dat \
+-parmfile ../data/larmorD_proteins_alphas_betas_cutoff_5.dat \
+-reffile ../data/larmorD_proteins_reference_shifts_cutoff_5.dat \
+-accfile ../data/larmorD_proteins_accuracy_cutoff_5.dat \
+-printError \
+-cutoff 5 A003.pdb 
+
 

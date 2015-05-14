@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 
-LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, bool residueBased, bool mismatchCheck)
+LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, bool residueBased, bool residueBasedWeights, bool mismatchCheck)
 {
     /* nuclei for which chemical shifts will be calculated */
     this->initializeShiftAtoms();    
@@ -29,6 +29,7 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     }
     
     this->residueBasedLarmor = residueBased;
+    this->residueBasedWeightsLarmor = residueBasedWeights;
     this->mismatchCheckLarmor = mismatchCheck;
     
     /* the accuracy weights for calculating errors */
@@ -245,7 +246,7 @@ void LARMORD::loadAccFile(const std::string faccfile)
 				getline(*accinp, line);
 				Misc::splitStr(line, " ", s, true);
 				if (s.size() ==  3){
-					if (this->residueBasedLarmor){
+					if (this->residueBasedLarmor || this->residueBasedWeightsLarmor){
 						this->accuracy_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)),atof(Misc::trim(s.at(2)).c_str())));
 						//std::cout << "Accuracy Weights " << Misc::trim(s.at(0))+":"+Misc::trim(s.at(1)) << " " << this->accuracy_weight.at(Misc::trim(s.at(0))) << std::endl;
 					} 

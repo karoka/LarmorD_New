@@ -1,7 +1,10 @@
 MAKE = make
 CXX = g++
 CXXFLAGS = -Wall
-#OPTFLAGS = -O1
+OPTFLAGS = -O1
+ifeq ($(UNAME_S),Darwin)
+                OPTFLAGS = ""
+endif
 #DEBUG = -g
 OTHERLIBS = ../
 INCFLAGS = -I../lib -I$(OTHERLIBS)

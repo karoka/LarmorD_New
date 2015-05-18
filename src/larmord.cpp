@@ -11,6 +11,7 @@
 #include "Molecule.hpp"
 #include "Residue.hpp"
 #include "Atom.hpp"
+#include "Misc.hpp"
 #include "Analyze.hpp"
 #include "LARMORD.hpp"
 #include "Trajectory.hpp"
@@ -105,6 +106,8 @@ int main (int argc, char **argv){
   double chi2_c=2.98;
   double weight=0.0;
   double errorCS=0.0;
+  std::vector<double> cs_data1;
+  std::vector<double> cs_data2;
 
   std::vector<std::vector<double> > neighborDistances;
 
@@ -125,6 +128,8 @@ int main (int argc, char **argv){
   residue_based_weights =false;
   residue_select = "";
   nucleus_select = "";
+  cs_data1.clear();
+  cs_data2.clear();
   
   LARMORD *larm;
   larm=NULL;
@@ -132,7 +137,6 @@ int main (int argc, char **argv){
   pdbs.clear();
   selected_residues.clear();
   selected_nuclei.clear();
-  isResidue = true;
   isResidue = true;
   mismatchCheck = false;
 
@@ -395,7 +399,9 @@ int main (int argc, char **argv){
 											error_rmse += (error*error);
 											error_wmae += weight*fabs(error);
 											error_wrmse += weight*weight*(error*error);
-											error_flat_chi2 += (1 - exp(-(pow((weight*error/chi2_c),2))));
+											error_flat_chi2 += (1 - exp(-(pow((weight*error/chi2_c),2))));											
+											cs_data1.push_back(cspred-randcs);
+											cs_data2.push_back(expcs-randcs);
 											counter++; 											
 										} 
 										else 
@@ -408,7 +414,7 @@ int main (int argc, char **argv){
             }
 						if (print_error)
 						{
-							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter)<< " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << identification << std::endl;
+							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter)<< " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << Misc::kendall(cs_data1,cs_data2)  << " " << identification << std::endl;
 						}            
           }
         }
@@ -517,6 +523,8 @@ int main (int argc, char **argv){
 								error_wmae += weight*fabs(error);
 								error_wrmse += weight*weight*(error*error);
 								error_flat_chi2 += (1 - exp(-(pow((weight*error/chi2_c),2))));
+								cs_data1.push_back(cspred-randcs);
+								cs_data2.push_back(expcs-randcs);								
 								counter++; 
 							} 
 							else 
@@ -529,7 +537,7 @@ int main (int argc, char **argv){
       }
       if (print_error)
       {
-      	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << identification << std::endl;
+      	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << Misc::kendall(cs_data1,cs_data2) << " "  << identification << std::endl;
       }
       delete mol;
     }

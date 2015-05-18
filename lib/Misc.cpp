@@ -302,3 +302,27 @@ double Misc::mae (std::vector<double> errorVec){
       return 0.0;
     }
 }
+
+double Misc::kendall (std::vector<double> data1, std::vector<double> data2)
+{
+	int is=0,j,k,n2=0,n1=0;
+	double aa,a2,a1,tau;
+	int n=data1.size();
+	for (j=0;j<n-1;j++) {
+		for (k=j+1;k<n;k++) {
+			a1=data1[j]-data1[k];
+			a2=data2[j]-data2[k];
+			aa=a1*a2;
+			if (aa != 0.0) {
+				++n1;
+				++n2;
+				aa > 0.0 ? ++is : --is;
+			} else {
+				if (a1 != 0.0) ++n1;
+				if (a2 != 0.0) ++n2;
+			}
+		}
+	}
+	tau=is/(sqrt((double)n1)*sqrt((double)n2));
+	return tau;
+}

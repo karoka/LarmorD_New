@@ -47,8 +47,9 @@ class Misc {
       static bool findUniqueFirst(const std::pair<First, Second> &a, const std::pair<First, Second> &b);
     template <class First, class Second>
       static bool findUniqueSecond(const std::pair<First, Second> &a, const std::pair<First, Second> &b);
-    static double rmse (std::vector<double> errorVec);
-    static double mae (std::vector<double> errorVec);
+    static double rmse(std::vector<double> errorVec);
+    static double mae(std::vector<double> errorVec);
+    static double kendall(std::vector<double> data1, std::vector<double> data2);
 };
 
 #endif

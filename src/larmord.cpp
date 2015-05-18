@@ -106,8 +106,8 @@ int main (int argc, char **argv){
   double chi2_c=2.98;
   double weight=0.0;
   double errorCS=0.0;
-  std::vector<double> cs_data1;
-  std::vector<double> cs_data2;
+  double tau;
+  std::vector<double> cs_C1,cs_C2,cs_CA1,cs_CA2,cs_CB1,cs_CB2,cs_N1,cs_N2,cs_HA1,cs_HA2,cs_H1,cs_H2;
 
   std::vector<std::vector<double> > neighborDistances;
 
@@ -128,9 +128,19 @@ int main (int argc, char **argv){
   residue_based_weights =false;
   residue_select = "";
   nucleus_select = "";
-  cs_data1.clear();
-  cs_data2.clear();
-  
+  cs_C1.clear();
+  cs_C2.clear();
+  cs_CA1.clear();
+  cs_CA2.clear();
+  cs_CB1.clear();
+  cs_CB2.clear();
+  cs_N1.clear();
+  cs_N2.clear();
+  cs_HA1.clear();
+  cs_HA2.clear();
+  cs_H1.clear();
+  cs_H2.clear();
+
   LARMORD *larm;
   larm=NULL;
 
@@ -400,8 +410,37 @@ int main (int argc, char **argv){
 											error_wmae += weight*fabs(error);
 											error_wrmse += weight*weight*(error*error);
 											error_flat_chi2 += (1 - exp(-(pow((weight*error/chi2_c),2))));											
-											cs_data1.push_back(cspred-randcs);
-											cs_data2.push_back(expcs-randcs);
+											if(nucleus=="C")
+											{
+												cs_C1.push_back(cspred-randcs);
+												cs_C2.push_back(expcs-randcs);	
+											}
+											else if (nucleus=="CA")
+											{
+												cs_CA1.push_back(cspred-randcs);
+												cs_CA2.push_back(expcs-randcs);									
+											}	
+											else if (nucleus=="CB")
+											{
+												cs_CB1.push_back(cspred-randcs);
+												cs_CB2.push_back(expcs-randcs);									
+											}	
+											else if (nucleus=="N")
+											{
+												cs_N1.push_back(cspred-randcs);
+												cs_N2.push_back(expcs-randcs);									
+											}	
+											else if (nucleus=="HA")
+											{
+												cs_HA1.push_back(cspred-randcs);
+												cs_HA2.push_back(expcs-randcs);									
+											}	
+											else if (nucleus=="H")
+											{
+												cs_H1.push_back(cspred-randcs);
+												cs_H2.push_back(expcs-randcs);									
+											}															
+											
 											counter++; 											
 										} 
 										else 
@@ -414,7 +453,14 @@ int main (int argc, char **argv){
             }
 						if (print_error)
 						{
-							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter)<< " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << Misc::kendall(cs_data1,cs_data2)  << " " << identification << std::endl;
+							tau = 0.0; 
+							tau += 1.0-Misc::kendall(cs_C1,cs_C2);
+							tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
+							tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
+							tau += 1.0-Misc::kendall(cs_N1,cs_N2);
+							tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
+							tau += 1.0-Misc::kendall(cs_H1,cs_H2);
+							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter)<< " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << tau  << " " << identification << std::endl;
 						}            
           }
         }
@@ -523,8 +569,36 @@ int main (int argc, char **argv){
 								error_wmae += weight*fabs(error);
 								error_wrmse += weight*weight*(error*error);
 								error_flat_chi2 += (1 - exp(-(pow((weight*error/chi2_c),2))));
-								cs_data1.push_back(cspred-randcs);
-								cs_data2.push_back(expcs-randcs);								
+								if(nucleus=="C")
+								{
+									cs_C1.push_back(cspred-randcs);
+									cs_C2.push_back(expcs-randcs);	
+								}
+								else if (nucleus=="CA")
+								{
+									cs_CA1.push_back(cspred-randcs);
+									cs_CA2.push_back(expcs-randcs);									
+								}	
+								else if (nucleus=="CB")
+								{
+									cs_CB1.push_back(cspred-randcs);
+									cs_CB2.push_back(expcs-randcs);									
+								}	
+								else if (nucleus=="N")
+								{
+									cs_N1.push_back(cspred-randcs);
+									cs_N2.push_back(expcs-randcs);									
+								}	
+								else if (nucleus=="HA")
+								{
+									cs_HA1.push_back(cspred-randcs);
+									cs_HA2.push_back(expcs-randcs);									
+								}	
+								else if (nucleus=="H")
+								{
+									cs_H1.push_back(cspred-randcs);
+									cs_H2.push_back(expcs-randcs);									
+								}															
 								counter++; 
 							} 
 							else 
@@ -537,7 +611,14 @@ int main (int argc, char **argv){
       }
       if (print_error)
       {
-      	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << Misc::kendall(cs_data1,cs_data2) << " "  << identification << std::endl;
+				tau = 0.0;
+				tau += 1.0-Misc::kendall(cs_C1,cs_C2);
+				tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
+				tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
+				tau += 1.0-Misc::kendall(cs_N1,cs_N2);
+				tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
+				tau += 1.0-Misc::kendall(cs_H1,cs_H2);      
+      	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << tau << " "  << identification << std::endl;
       }
       delete mol;
     }

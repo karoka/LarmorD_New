@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 
-LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, bool residueBased, bool residueBasedWeights, bool mismatchCheck)
+LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, const std::string fcorfile,  bool residueBased, bool residueBasedWeights, bool mismatchCheck)
 {
     /* nuclei for which chemical shifts will be calculated */
     this->initializeShiftAtoms();    
@@ -53,14 +53,18 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     if (mol != NULL){
         this->renameRes(mol);
     }    
+
     /* load chemical shifts from file */
     if (fchemshift.length() > 0){
         this->loadCSFile(fchemshift,mol);
         //std::cout << "done with chemical shifts..." << std::endl;
     }
     
-    
-        
+    /* load relative correlation weighting from file */
+    if (fcorfile.length() > 0){
+        this->loadCorrFile(fcorfile);
+    }
+            
 }
 
 std::vector<double> LARMORD::getAlpha(const std::string &key)
@@ -264,6 +268,34 @@ void LARMORD::loadAccFile(const std::string faccfile)
 	}
 }
 
+
+void LARMORD::loadCorrFile(const std::string fcorrfile)
+{
+	std::ifstream corrFile;
+	std::istream* corrinp;
+	std::string line;
+	std::vector<std::string> s;
+	if (fcorrfile.length() > 0){
+		corrFile.open(fcorrfile.c_str(), std::ios::in);
+		corrinp=&corrFile;
+		if (corrFile.is_open()){
+			while (corrinp->good() && !(corrinp->eof()))
+			{
+				getline(*corrinp, line);
+				Misc::splitStr(line, " ", s, true);
+				if (s.size() ==  2){
+						this->correlation_weight.insert(std::pair<std::string,double>(Misc::trim(s.at(0)),atof(Misc::trim(s.at(1)).c_str())));
+				}
+			}
+		}
+		else {
+			std::cerr << "Error: Unable to open file: " << fcorrfile << std::endl;	
+			exit(0);		                			
+		}
+	}
+}
+
+
 int LARMORD::getNShiftAtoms()
 {
     return (this->shiftAtoms.size());
@@ -300,6 +332,15 @@ double LARMORD::getAccuracyWeight(const std::string &key)
 {
     if (this->accuracy_weight.find (key) != this->accuracy_weight.end()){
         return this->accuracy_weight.at(key);
+    } else {
+        return 1.0;
+    }
+}
+
+double LARMORD::getCorrelationWeight(const std::string &key)
+{
+    if (this->correlation_weight.find (key) != this->correlation_weight.end()){
+        return this->correlation_weight.at(key);
     } else {
         return 1.0;
     }

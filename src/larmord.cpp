@@ -35,6 +35,7 @@ void usage(){
   std::cerr << "         [-parmfile PARAMfile]" << std::endl;
   std::cerr << "         [-reffile REFfile]" << std::endl;
   std::cerr << "         [-accfile ACCfile]" << std::endl;
+  std::cerr << "         [-corrfile CORRfile]" << std::endl;  
   std::cerr << "         [-cutoff CUToff]" << std::endl;
   std::cerr << "         [-printError]" << std::endl;
   std::cerr << "         [-residueSelection]" << std::endl;
@@ -60,6 +61,7 @@ int main (int argc, char **argv){
   std::string fparmfile;
   std::string freffile;
   std::string faccfile;
+  std::string fcorfile;
   std::string nucleus;
   std::string resname;
   std::string atomname;
@@ -121,6 +123,7 @@ int main (int argc, char **argv){
   fparmfile="";
   freffile="";  
   faccfile="";  
+  fcorfile="";
   identification="None";
   cutoff=99999.9;
   print_error = false;
@@ -170,6 +173,11 @@ int main (int argc, char **argv){
     {
       currArg=argv[++i];
       freffile=currArg;
+    }
+    else if (currArg.compare("-corrfile") == 0 || currArg.compare("-r") == 0 )
+    {
+      currArg=argv[++i];
+      fcorfile=currArg;
     }
     else if (currArg.compare("-residueBased") == 0 )
     {
@@ -301,7 +309,7 @@ int main (int argc, char **argv){
     /* instantiate LARMORD */
     mol=Molecule::readPDB(pdbs.at(0));
     mol->selAll();
-    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,residue_based_weights,mismatchCheck);
+    larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,fcorfile,residue_based,residue_based_weights,mismatchCheck);
         
     /* Process trajectories */
     for (itrj=0; itrj< trajs.size(); itrj++)
@@ -467,17 +475,17 @@ int main (int argc, char **argv){
 						{
 							tau = 0.0; 
 							if(cs_C1.size() > 0)
-								tau += 1.0-Misc::kendall(cs_C1,cs_C2);
+								tau += larm->getCorrelationWeight("C")*(1.0-Misc::kendall(cs_C1,cs_C2));
 							if(cs_CA1.size() > 0)
-								tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
+								tau += larm->getCorrelationWeight("CA")*(1.0-Misc::kendall(cs_CA1,cs_CA2));
 							if(cs_CB1.size() > 0)
-								tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
+								tau += larm->getCorrelationWeight("CB")*(1.0-Misc::kendall(cs_CB1,cs_CB2));
 							if(cs_N1.size() > 0)
-								tau += 1.0-Misc::kendall(cs_N1,cs_N2);
+								tau += larm->getCorrelationWeight("N")*(1.0-Misc::kendall(cs_N1,cs_N2));
 							if(cs_HA1.size() > 0)
-								tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
+								tau += larm->getCorrelationWeight("HA")*(1.0-Misc::kendall(cs_HA1,cs_HA2));
 							if(cs_H1.size() > 0)
-								tau += 1.0-Misc::kendall(cs_H1,cs_H2);
+								tau += larm->getCorrelationWeight("H")*(1.0-Misc::kendall(cs_H1,cs_H2));
 							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter)<< " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << tau  << " " << identification << std::endl;
 						}            
           }
@@ -500,7 +508,7 @@ int main (int argc, char **argv){
     for (f=0; f< pdbs.size(); f++)
     {  
       mol=Molecule::readPDB(pdbs.at(f));
-      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,residue_based,residue_based_weights,mismatchCheck);
+      larm = new LARMORD(mol,fchemshift,fparmfile,freffile,faccfile,fcorfile,residue_based,residue_based_weights,mismatchCheck);
       
       //std::cerr << "Processing file \"" << pdbs.at(f) << "..." << std::endl;
       /* get distance matrix */
@@ -644,17 +652,17 @@ int main (int argc, char **argv){
       {
 				tau = 0.0;
 				if(cs_C1.size() > 0)
-					tau += 1.0-Misc::kendall(cs_C1,cs_C2);
+					tau += larm->getCorrelationWeight("C")*(1.0-Misc::kendall(cs_C1,cs_C2));
 				if(cs_CA1.size() > 0)
-					tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
+					tau += larm->getCorrelationWeight("CA")*(1.0-Misc::kendall(cs_CA1,cs_CA2));
 				if(cs_CB1.size() > 0)
-					tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
+					tau += larm->getCorrelationWeight("CB")*(1.0-Misc::kendall(cs_CB1,cs_CB2));
 				if(cs_N1.size() > 0)
-					tau += 1.0-Misc::kendall(cs_N1,cs_N2);
+					tau += larm->getCorrelationWeight("N")*(1.0-Misc::kendall(cs_N1,cs_N2));
 				if(cs_HA1.size() > 0)
-					tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
+					tau += larm->getCorrelationWeight("HA")*(1.0-Misc::kendall(cs_HA1,cs_HA2));
 				if(cs_H1.size() > 0)
-					tau += 1.0-Misc::kendall(cs_H1,cs_H2);
+					tau += larm->getCorrelationWeight("H")*(1.0-Misc::kendall(cs_H1,cs_H2));
       	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << tau << " "  << identification << std::endl;
       }
       delete mol;

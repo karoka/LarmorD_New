@@ -52,4 +52,13 @@ echo "A003 test error nucleus-based weights"
 -printError \
 -cutoff 5 A003.pdb 
 
+o " "
+echo "A003 test error nucleus-based weights"
+../bin/larmord  -csfile measured_shifts_A003.dat \
+-parmfile ../data/larmorD_proteins_alphas_betas_cutoff_5.dat \
+-reffile ../data/larmorD_proteins_reference_shifts_cutoff_5.dat \
+-accfile ../data/larmorD_proteins_accuracy_cutoff_5.dat \
+-corrfile correl_weights_zero.txt  \
+-printError \
+-cutoff 5 A003.pdb
 

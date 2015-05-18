@@ -30,11 +30,12 @@ class LARMORD {
          std::map<std::string,double> experimentalCS; 
          std::map<std::string,double> errorCS; 
          std::map<std::string,double> accuracy_weight;
+         std::map<std::string,double> correlation_weight;
          bool residueBasedLarmor;
          bool residueBasedWeightsLarmor;
          bool mismatchCheckLarmor; 
     public:
-        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="",bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false);
+        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="", const std::string fcorfile="", bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false);
         void initializeShiftAtoms();
         void initializeRandomShifts();
         void initializeAlpha();
@@ -46,11 +47,13 @@ class LARMORD {
         double getExperimentalCS(const std::string &key);
         double getErrorCS(const std::string &key);
         double getAccuracyWeight(const std::string &key);
+        double getCorrelationWeight(const std::string &key);
         int getNShiftAtoms();
         void renameRes(Molecule *mol);
         void loadCSFile(const std::string fchemshift, Molecule *mol);
         void loadParmFile(const std::string fparmfile);
         void loadRefFile(const std::string freffile);
         void loadAccFile(const std::string faccfile);
+        void loadCorrFile(const std::string fcorrfile);
 };
 #endif

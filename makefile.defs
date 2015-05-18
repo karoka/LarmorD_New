@@ -1,7 +1,7 @@
 MAKE = make
 CXX = g++
 CXXFLAGS = -Wall
-#OPTFLAGS = -O3
+OPTFLAGS = -O3
 ifeq ($(UNAME_S),Darwin)
                 OPTFLAGS = ""
 endif

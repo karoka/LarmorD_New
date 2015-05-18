@@ -344,6 +344,18 @@ int main (int argc, char **argv){
 							error_wmae = 0.0;
 							error_wrmse = 0.0;
 							error_flat_chi2 = 0.0;
+							cs_C1.clear();
+							cs_C2.clear();
+							cs_CA1.clear();
+							cs_CA2.clear();
+							cs_CB1.clear();
+							cs_CB2.clear();
+							cs_N1.clear();
+							cs_N2.clear();
+							cs_HA1.clear();
+							cs_HA2.clear();
+							cs_H1.clear();
+							cs_H2.clear();							
 							counter = 0;
 						}
             
@@ -507,6 +519,19 @@ int main (int argc, char **argv){
 				error_wmae = 0.0;
 				error_wrmse = 0.0;
 				error_flat_chi2 = 0.0;
+				cs_C1.clear();
+				cs_C2.clear();
+				cs_CA1.clear();
+				cs_CA2.clear();
+				cs_CB1.clear();
+				cs_CB2.clear();
+				cs_N1.clear();
+				cs_N2.clear();
+				cs_HA1.clear();
+				cs_HA2.clear();
+				cs_H1.clear();
+				cs_H2.clear();
+				
 				counter = 0;
       }
       

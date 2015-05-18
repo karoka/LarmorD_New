@@ -5,7 +5,7 @@ include ../makefile.defs
 
 OBJS = libmoletools.$(LIBEXT)
 
-all:	$(BINDIR) libmoletools.$(LIBEXT) larmord test
+all:	$(BINDIR) libmoletools.$(LIBEXT) larmord
 
 clean:
 	rm -rf *.o
@@ -20,9 +20,6 @@ libmoletools.$(LIBEXT):
 	$(MAKE) -C ../lib libmoletools.$(LIBEXT)
 
 larmord: larmord.o $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OPTFLAGS) $(DEBUG) $(LIBFLAGS) $(INCFLAGS) -o $(BINDIR)/$@ $< $(LINKFLAGS)
-
-test:   test.o $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OPTFLAGS) $(DEBUG) $(LIBFLAGS) $(INCFLAGS) -o $(BINDIR)/$@ $< $(LINKFLAGS)
 
 %.o:	%.cpp

@@ -454,12 +454,18 @@ int main (int argc, char **argv){
 						if (print_error)
 						{
 							tau = 0.0; 
-							tau += 1.0-Misc::kendall(cs_C1,cs_C2);
-							tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
-							tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
-							tau += 1.0-Misc::kendall(cs_N1,cs_N2);
-							tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
-							tau += 1.0-Misc::kendall(cs_H1,cs_H2);
+							if(cs_C1.size() > 0)
+								tau += 1.0-Misc::kendall(cs_C1,cs_C2);
+							if(cs_CA1.size() > 0)
+								tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
+							if(cs_CB1.size() > 0)
+								tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
+							if(cs_N1.size() > 0)
+								tau += 1.0-Misc::kendall(cs_N1,cs_N2);
+							if(cs_HA1.size() > 0)
+								tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
+							if(cs_H1.size() > 0)
+								tau += 1.0-Misc::kendall(cs_H1,cs_H2);
 							std::cout << 0 << " " << i << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter)<< " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << tau  << " " << identification << std::endl;
 						}            
           }
@@ -612,12 +618,18 @@ int main (int argc, char **argv){
       if (print_error)
       {
 				tau = 0.0;
-				tau += 1.0-Misc::kendall(cs_C1,cs_C2);
-				tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
-				tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
-				tau += 1.0-Misc::kendall(cs_N1,cs_N2);
-				tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
-				tau += 1.0-Misc::kendall(cs_H1,cs_H2);      
+				if(cs_C1.size() > 0)
+					tau += 1.0-Misc::kendall(cs_C1,cs_C2);
+				if(cs_CA1.size() > 0)
+					tau += 1.0-Misc::kendall(cs_CA1,cs_CA2);
+				if(cs_CB1.size() > 0)
+					tau += 1.0-Misc::kendall(cs_CB1,cs_CB2);
+				if(cs_N1.size() > 0)
+					tau += 1.0-Misc::kendall(cs_N1,cs_N2);
+				if(cs_HA1.size() > 0)
+					tau += 1.0-Misc::kendall(cs_HA1,cs_HA2);
+				if(cs_H1.size() > 0)
+					tau += 1.0-Misc::kendall(cs_H1,cs_H2);
       	std::cout << 0 << " " << f+1 << " " << error_mae/counter << " " << sqrt(error_rmse/counter) << " " << error_wmae/counter << " " <<  sqrt(error_wrmse/counter) << " " <<  chi2_c*chi2_c*(error_flat_chi2/counter) << " " << tau << " "  << identification << std::endl;
       }
       delete mol;

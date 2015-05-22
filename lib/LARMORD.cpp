@@ -2082,7 +2082,6 @@ void LARMORD::initializeAtomTypes()
 	if(this->MolTypeLamor==Misc::tolower("protein")){
 		this->atomTypes.clear();
 		this->atomTypes.push_back("CYS:C");
-		this->atomTypes.push_back("CYS:C");
 		this->atomTypes.push_back("CYS:CB");
 		this->atomTypes.push_back("CYS:CA");
 		this->atomTypes.push_back("CYS:O");

@@ -35,7 +35,7 @@ class LARMORD {
          bool residueBasedWeightsLarmor;
          bool mismatchCheckLarmor; 
     public:
-        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="", const std::string fcorfile="", bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false);
+        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="", const std::string fcorfile="", bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false, bool extractor=false);
         void initializeShiftAtoms();
         void initializeRandomShifts();
         void initializeAlpha();

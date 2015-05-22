@@ -16,12 +16,12 @@
 #include <stdlib.h>
 
 
-LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, const std::string fcorfile,  bool residueBased, bool residueBasedWeights, bool mismatchCheck)
+LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, const std::string fcorfile,  bool residueBased, bool residueBasedWeights, bool mismatchCheck, bool extractor)
 {
     /* nuclei for which chemical shifts will be calculated */
     this->initializeShiftAtoms();    
     /* set random coil chemical shifts */
-    if (fparmfile.length()==0){
+    if (freffile.length()==0){
         this->initializeRandomShifts();
     } else {
         this->loadRefFile(freffile);
@@ -42,8 +42,10 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     
     
     if (fparmfile.length()==0){
-        std::cerr << std::endl << "Error: Please provide an input parameter file" << std::endl << std::endl;
-        this->initializeAlpha();
+        if (!extractor){
+					std::cerr << std::endl << "Error: Please provide an input parameter file" << std::endl << std::endl;
+					this->initializeAlpha();
+        } 
     } else {
         this->loadParmFile(fparmfile);
         //std::cout << "done with parameters..." << std::endl;

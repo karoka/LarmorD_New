@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 
-LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, const std::string fcorfile,  bool residueBased, bool residueBasedWeights, bool mismatchCheck, bool extractor)
+LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, const std::string fcorfile,  bool residueBased, bool residueBasedWeights, bool mismatchCheck, bool extractor, std::string MolType)
 {
     /* nuclei for which chemical shifts will be calculated */
     this->initializeShiftAtoms();    
@@ -31,6 +31,7 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     this->residueBasedLarmor = residueBased;
     this->residueBasedWeightsLarmor = residueBasedWeights;
     this->mismatchCheckLarmor = mismatchCheck;
+    this->MolTypeLamor = MolType;
     
     /* the accuracy weights for calculating errors */
     if (faccfile.length()==0){
@@ -46,6 +47,9 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
 					std::cerr << std::endl << "Error: Please provide an input parameter file" << std::endl << std::endl;
 					this->initializeAlpha();
         } 
+        else {
+        	this->initializeAtomTypes();
+        }
     } else {
         this->loadParmFile(fparmfile);
         //std::cout << "done with parameters..." << std::endl;
@@ -2071,4 +2075,251 @@ void LARMORD::initializeAlpha()
     this->alphas.insert(std::pair<std::string,double>("C5:CYT:N3",0.389718934631));
     this->alphas.insert(std::pair<std::string,double>("C5:CYT:N4",15.9492324187));
     this->alphas.insert(std::pair<std::string,double>("C5:CYT:O2",-48.2342535574));
+}
+
+void LARMORD::initializeAtomTypes()
+{
+	if(this->MolTypeLamor==Misc::tolower("protein")){
+		this->atomTypes.clear();
+		this->atomTypes.push_back("CYS:C");
+		this->atomTypes.push_back("CYS:C");
+		this->atomTypes.push_back("CYS:CB");
+		this->atomTypes.push_back("CYS:CA");
+		this->atomTypes.push_back("CYS:O");
+		this->atomTypes.push_back("CYS:N");
+		this->atomTypes.push_back("CYS:SG");
+		this->atomTypes.push_back("ASP:C");
+		this->atomTypes.push_back("ASP:CB");
+		this->atomTypes.push_back("ASP:CA");
+		this->atomTypes.push_back("ASP:CG");
+		this->atomTypes.push_back("ASP:O");
+		this->atomTypes.push_back("ASP:N");
+		this->atomTypes.push_back("ASP:OD1");
+		this->atomTypes.push_back("ASP:OD2");
+		this->atomTypes.push_back("SER:C");
+		this->atomTypes.push_back("SER:OG");
+		this->atomTypes.push_back("SER:CB");
+		this->atomTypes.push_back("SER:CA");
+		this->atomTypes.push_back("SER:O");
+		this->atomTypes.push_back("SER:N");
+		this->atomTypes.push_back("GLN:C");
+		this->atomTypes.push_back("GLN:CB");
+		this->atomTypes.push_back("GLN:CA");
+		this->atomTypes.push_back("GLN:CG");
+		this->atomTypes.push_back("GLN:O");
+		this->atomTypes.push_back("GLN:N");
+		this->atomTypes.push_back("GLN:CD");
+		this->atomTypes.push_back("GLN:NE2");
+		this->atomTypes.push_back("GLN:OE1");
+		this->atomTypes.push_back("LYS:C");
+		this->atomTypes.push_back("LYS:CB");
+		this->atomTypes.push_back("LYS:CA");
+		this->atomTypes.push_back("LYS:CG");
+		this->atomTypes.push_back("LYS:CE");
+		this->atomTypes.push_back("LYS:CD");
+		this->atomTypes.push_back("LYS:NZ");
+		this->atomTypes.push_back("LYS:O");
+		this->atomTypes.push_back("LYS:N");
+		this->atomTypes.push_back("ILE:C");
+		this->atomTypes.push_back("ILE:CG2");
+		this->atomTypes.push_back("ILE:CB");
+		this->atomTypes.push_back("ILE:CA");
+		this->atomTypes.push_back("ILE:O");
+		this->atomTypes.push_back("ILE:N");
+		this->atomTypes.push_back("ILE:CD1");
+		this->atomTypes.push_back("ILE:CG1");
+		this->atomTypes.push_back("ILE:CD");
+		this->atomTypes.push_back("PRO:C");
+		this->atomTypes.push_back("PRO:CB");
+		this->atomTypes.push_back("PRO:CA");
+		this->atomTypes.push_back("PRO:CG");
+		this->atomTypes.push_back("PRO:O");
+		this->atomTypes.push_back("PRO:N");
+		this->atomTypes.push_back("PRO:CD");
+		this->atomTypes.push_back("THR:C");
+		this->atomTypes.push_back("THR:CB");
+		this->atomTypes.push_back("THR:CA");
+		this->atomTypes.push_back("THR:OG1");
+		this->atomTypes.push_back("THR:O");
+		this->atomTypes.push_back("THR:N");
+		this->atomTypes.push_back("THR:CG2");
+		this->atomTypes.push_back("PHE:C");
+		this->atomTypes.push_back("PHE:CE1");
+		this->atomTypes.push_back("PHE:CB");
+		this->atomTypes.push_back("PHE:CA");
+		this->atomTypes.push_back("PHE:CG");
+		this->atomTypes.push_back("PHE:O");
+		this->atomTypes.push_back("PHE:N");
+		this->atomTypes.push_back("PHE:CZ");
+		this->atomTypes.push_back("PHE:CD1");
+		this->atomTypes.push_back("PHE:CD2");
+		this->atomTypes.push_back("PHE:CE2");
+		this->atomTypes.push_back("ALA:CB");
+		this->atomTypes.push_back("ALA:C");
+		this->atomTypes.push_back("ALA:CA");
+		this->atomTypes.push_back("ALA:O");
+		this->atomTypes.push_back("ALA:N");
+		this->atomTypes.push_back("GLY:C");
+		this->atomTypes.push_back("GLY:CA");
+		this->atomTypes.push_back("GLY:O");
+		this->atomTypes.push_back("GLY:N");
+		this->atomTypes.push_back("HIS:C");
+		this->atomTypes.push_back("HIS:CE1");
+		this->atomTypes.push_back("HIS:CB");
+		this->atomTypes.push_back("HIS:CA");
+		this->atomTypes.push_back("HIS:CG");
+		this->atomTypes.push_back("HIS:O");
+		this->atomTypes.push_back("HIS:N");
+		this->atomTypes.push_back("HIS:CD2");
+		this->atomTypes.push_back("HIS:ND1");
+		this->atomTypes.push_back("HIS:NE2");
+		this->atomTypes.push_back("GLU:C");
+		this->atomTypes.push_back("GLU:CB");
+		this->atomTypes.push_back("GLU:CA");
+		this->atomTypes.push_back("GLU:CG");
+		this->atomTypes.push_back("GLU:O");
+		this->atomTypes.push_back("GLU:N");
+		this->atomTypes.push_back("GLU:OE2");
+		this->atomTypes.push_back("GLU:CD");
+		this->atomTypes.push_back("GLU:OE1");
+		this->atomTypes.push_back("LEU:C");
+		this->atomTypes.push_back("LEU:CB");
+		this->atomTypes.push_back("LEU:CA");
+		this->atomTypes.push_back("LEU:CG");
+		this->atomTypes.push_back("LEU:O");
+		this->atomTypes.push_back("LEU:N");
+		this->atomTypes.push_back("LEU:CD1");
+		this->atomTypes.push_back("LEU:CD2");
+		this->atomTypes.push_back("ARG:C");
+		this->atomTypes.push_back("ARG:CB");
+		this->atomTypes.push_back("ARG:CA");
+		this->atomTypes.push_back("ARG:CG");
+		this->atomTypes.push_back("ARG:NE");
+		this->atomTypes.push_back("ARG:O");
+		this->atomTypes.push_back("ARG:CD");
+		this->atomTypes.push_back("ARG:CZ");
+		this->atomTypes.push_back("ARG:NH1");
+		this->atomTypes.push_back("ARG:NH2");
+		this->atomTypes.push_back("ARG:N");
+		this->atomTypes.push_back("TRP:C");
+		this->atomTypes.push_back("TRP:CD1");
+		this->atomTypes.push_back("TRP:CZ2");
+		this->atomTypes.push_back("TRP:CB");
+		this->atomTypes.push_back("TRP:CA");
+		this->atomTypes.push_back("TRP:CG");
+		this->atomTypes.push_back("TRP:O");
+		this->atomTypes.push_back("TRP:N");
+		this->atomTypes.push_back("TRP:CH2");
+		this->atomTypes.push_back("TRP:CE3");
+		this->atomTypes.push_back("TRP:CE2");
+		this->atomTypes.push_back("TRP:CD2");
+		this->atomTypes.push_back("TRP:CZ3");
+		this->atomTypes.push_back("TRP:NE1");
+		this->atomTypes.push_back("VAL:C");
+		this->atomTypes.push_back("VAL:CB");
+		this->atomTypes.push_back("VAL:CA");
+		this->atomTypes.push_back("VAL:O");
+		this->atomTypes.push_back("VAL:N");
+		this->atomTypes.push_back("VAL:CG1");
+		this->atomTypes.push_back("VAL:CG2");
+		this->atomTypes.push_back("ASN:C");
+		this->atomTypes.push_back("ASN:CB");
+		this->atomTypes.push_back("ASN:CA");
+		this->atomTypes.push_back("ASN:CG");
+		this->atomTypes.push_back("ASN:O");
+		this->atomTypes.push_back("ASN:N");
+		this->atomTypes.push_back("ASN:OD1");
+		this->atomTypes.push_back("ASN:OT1");
+		this->atomTypes.push_back("ASN:ND2");
+		this->atomTypes.push_back("TYR:C");
+		this->atomTypes.push_back("TYR:CE1");
+		this->atomTypes.push_back("TYR:OH");
+		this->atomTypes.push_back("TYR:CB");
+		this->atomTypes.push_back("TYR:CA");
+		this->atomTypes.push_back("TYR:CG");
+		this->atomTypes.push_back("TYR:O");
+		this->atomTypes.push_back("TYR:N");
+		this->atomTypes.push_back("TYR:CZ");
+		this->atomTypes.push_back("TYR:CD1");
+		this->atomTypes.push_back("TYR:CD2");
+		this->atomTypes.push_back("TYR:CE2");
+		this->atomTypes.push_back("MET:C");
+		this->atomTypes.push_back("MET:CB");
+		this->atomTypes.push_back("MET:CA");
+		this->atomTypes.push_back("MET:CG");
+		this->atomTypes.push_back("MET:CE");
+		this->atomTypes.push_back("MET:N");
+		this->atomTypes.push_back("MET:O");
+		this->atomTypes.push_back("MET:SD");
+	}
+	else if(this->MolTypeLamor==Misc::tolower("rna")){
+		this->atomTypes.push_back("GUA:C1'");
+		this->atomTypes.push_back("GUA:C2'");
+		this->atomTypes.push_back("GUA:C3'");
+		this->atomTypes.push_back("GUA:C4'");
+		this->atomTypes.push_back("GUA:C5'");
+		this->atomTypes.push_back("GUA:P");
+		this->atomTypes.push_back("GUA:O5'");
+		this->atomTypes.push_back("GUA:O3'");
+		this->atomTypes.push_back("GUA:C2");
+		this->atomTypes.push_back("GUA:C4");
+		this->atomTypes.push_back("GUA:C5");
+		this->atomTypes.push_back("GUA:C6");
+		this->atomTypes.push_back("GUA:C8");
+		this->atomTypes.push_back("GUA:N1");
+		this->atomTypes.push_back("GUA:N2");
+		this->atomTypes.push_back("GUA:N3");
+		this->atomTypes.push_back("GUA:N7");
+		this->atomTypes.push_back("GUA:N9");
+		this->atomTypes.push_back("GUA:O6");
+		this->atomTypes.push_back("ADE:C1'");
+		this->atomTypes.push_back("ADE:C2'");
+		this->atomTypes.push_back("ADE:C3'");
+		this->atomTypes.push_back("ADE:C4'");
+		this->atomTypes.push_back("ADE:C5'");
+		this->atomTypes.push_back("ADE:P");
+		this->atomTypes.push_back("ADE:O5'");
+		this->atomTypes.push_back("ADE:O3'");
+		this->atomTypes.push_back("ADE:C2");
+		this->atomTypes.push_back("ADE:C4");
+		this->atomTypes.push_back("ADE:C5");
+		this->atomTypes.push_back("ADE:C6");
+		this->atomTypes.push_back("ADE:C8");
+		this->atomTypes.push_back("ADE:N1");
+		this->atomTypes.push_back("ADE:N3");
+		this->atomTypes.push_back("ADE:N6");
+		this->atomTypes.push_back("ADE:N7");
+		this->atomTypes.push_back("ADE:N9");
+		this->atomTypes.push_back("URA:C1'");
+		this->atomTypes.push_back("URA:C2'");
+		this->atomTypes.push_back("URA:C3'");
+		this->atomTypes.push_back("URA:C4'");
+		this->atomTypes.push_back("URA:C5'");
+		this->atomTypes.push_back("URA:P");
+		this->atomTypes.push_back("URA:O5'");
+		this->atomTypes.push_back("URA:O3'");
+		this->atomTypes.push_back("URA:C2");
+		this->atomTypes.push_back("URA:C4");
+		this->atomTypes.push_back("URA:C5");
+		this->atomTypes.push_back("URA:C6");
+		this->atomTypes.push_back("URA:N1");
+		this->atomTypes.push_back("URA:N3");
+		this->atomTypes.push_back("URA:O4");
+		this->atomTypes.push_back("CYT:C1'");
+		this->atomTypes.push_back("CYT:C2'");
+		this->atomTypes.push_back("CYT:C3'");
+		this->atomTypes.push_back("CYT:C4'");
+		this->atomTypes.push_back("CYT:C5'");
+		this->atomTypes.push_back("CYT:P");
+		this->atomTypes.push_back("CYT:O5'");
+		this->atomTypes.push_back("CYT:O3'");
+		this->atomTypes.push_back("CYT:C2");
+		this->atomTypes.push_back("CYT:C4");
+		this->atomTypes.push_back("CYT:C5");
+		this->atomTypes.push_back("CYT:C6");
+		this->atomTypes.push_back("CYT:N1");
+		this->atomTypes.push_back("CYT:N3");
+		this->atomTypes.push_back("CYT:N4");
+		this->atomTypes.push_back("CYT:O2");	
+	}
 }

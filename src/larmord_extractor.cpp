@@ -32,16 +32,11 @@ void usage(){
   std::cerr << "====================================================" << std::endl;
   std::cerr << "Usage:   larmord [-options] <PDBfile>" << std::endl;
   std::cerr << "Options: [-csfile CSfile]" << std::endl;
-  std::cerr << "         [-parmfile PARAMfile]" << std::endl;
-  std::cerr << "         [-reffile REFfile]" << std::endl;
-  std::cerr << "         [-accfile ACCfile]" << std::endl;
-  std::cerr << "         [-corrfile CORRfile]" << std::endl;  
   std::cerr << "         [-cutoff CUToff]" << std::endl;
-  std::cerr << "         [-printError]" << std::endl;
+  std::cerr << "         [-beta BETA]" << std::endl;
+  std::cerr << "         [-rna]" << std::endl;
   std::cerr << "         [-residueSelection]" << std::endl;
   std::cerr << "         [-nucleusSelection]" << std::endl;
-  std::cerr << "         [-residueBasedWeights]" << std::endl;  
-  std::cerr << "         [-mismatchCheck]" << std::endl;  
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
   std::cerr << "         [-identification ID]" << std::endl;
@@ -69,8 +64,8 @@ int main (int argc, char **argv){
   bool isResidue;
   bool isNucleus;
   bool mismatchCheck;
-  std::vector<std::string> atomTypes;
   std::map<std::string, double> histo;
+  std::string moltype;
   
   std::vector<std::string> trajs;
   int start;
@@ -110,6 +105,7 @@ int main (int argc, char **argv){
   beta=-3;
   residue_select = "";
   nucleus_select = "";
+  moltype = "protein";
   
  
   LARMORD *larm;
@@ -120,7 +116,6 @@ int main (int argc, char **argv){
   selected_nuclei.clear();
   isResidue = true;
   mismatchCheck = false;
-  atomTypes.clear();
   histo.clear();
 
   for (i=1; i<argc; i++){
@@ -162,6 +157,10 @@ int main (int argc, char **argv){
     {
       currArg=argv[++i];
       std::stringstream(currArg) >> beta;
+    }
+    else if (currArg.compare("-rna") == 0)
+    {
+      moltype="rna";
     }
     else if (currArg.compare("-trj") == 0 || currArg.compare("-traj") == 0)
     {
@@ -233,179 +232,6 @@ int main (int argc, char **argv){
 		}
 	}
 
-  //There might be a cleaner way of doing this
-  //but adding new atom types is easier/more obvious here.
-  //Note that they are in alphanumeric order and sorted later!  
-	atomTypes.push_back("CYS:C");
-	atomTypes.push_back("CYS:CB");
-	atomTypes.push_back("CYS:CA");
-	atomTypes.push_back("CYS:O");
-	atomTypes.push_back("CYS:N");
-	atomTypes.push_back("CYS:SG");
-	atomTypes.push_back("ASP:C");
-	atomTypes.push_back("ASP:CB");
-	atomTypes.push_back("ASP:CA");
-	atomTypes.push_back("ASP:CG");
-	atomTypes.push_back("ASP:O");
-	atomTypes.push_back("ASP:N");
-	atomTypes.push_back("ASP:OD1");
-	atomTypes.push_back("ASP:OD2");
-	atomTypes.push_back("SER:C");
-	atomTypes.push_back("SER:OG");
-	atomTypes.push_back("SER:CB");
-	atomTypes.push_back("SER:CA");
-	atomTypes.push_back("SER:O");
-	atomTypes.push_back("SER:N");
-	atomTypes.push_back("GLN:C");
-	atomTypes.push_back("GLN:CB");
-	atomTypes.push_back("GLN:CA");
-	atomTypes.push_back("GLN:CG");
-	atomTypes.push_back("GLN:O");
-	atomTypes.push_back("GLN:N");
-	atomTypes.push_back("GLN:CD");
-	atomTypes.push_back("GLN:NE2");
-	atomTypes.push_back("GLN:OE1");
-	atomTypes.push_back("LYS:C");
-	atomTypes.push_back("LYS:CB");
-	atomTypes.push_back("LYS:CA");
-	atomTypes.push_back("LYS:CG");
-	atomTypes.push_back("LYS:CE");
-	atomTypes.push_back("LYS:CD");
-	atomTypes.push_back("LYS:NZ");
-	atomTypes.push_back("LYS:O");
-	atomTypes.push_back("LYS:N");
-	atomTypes.push_back("ILE:C");
-	atomTypes.push_back("ILE:CG2");
-	atomTypes.push_back("ILE:CB");
-	atomTypes.push_back("ILE:CA");
-	atomTypes.push_back("ILE:O");
-	atomTypes.push_back("ILE:N");
-	atomTypes.push_back("ILE:CD1");
-	atomTypes.push_back("ILE:CG1");
-	atomTypes.push_back("ILE:CD");
-	atomTypes.push_back("PRO:C");
-	atomTypes.push_back("PRO:CB");
-	atomTypes.push_back("PRO:CA");
-	atomTypes.push_back("PRO:CG");
-	atomTypes.push_back("PRO:O");
-	atomTypes.push_back("PRO:N");
-	atomTypes.push_back("PRO:CD");
-	atomTypes.push_back("THR:C");
-	atomTypes.push_back("THR:CB");
-	atomTypes.push_back("THR:CA");
-	atomTypes.push_back("THR:OG1");
-	atomTypes.push_back("THR:O");
-	atomTypes.push_back("THR:N");
-	atomTypes.push_back("THR:CG2");
-	atomTypes.push_back("PHE:C");
-	atomTypes.push_back("PHE:CE1");
-	atomTypes.push_back("PHE:CB");
-	atomTypes.push_back("PHE:CA");
-	atomTypes.push_back("PHE:CG");
-	atomTypes.push_back("PHE:O");
-	atomTypes.push_back("PHE:N");
-	atomTypes.push_back("PHE:CZ");
-	atomTypes.push_back("PHE:CD1");
-	atomTypes.push_back("PHE:CD2");
-	atomTypes.push_back("PHE:CE2");
-	atomTypes.push_back("ALA:CB");
-	atomTypes.push_back("ALA:C");
-	atomTypes.push_back("ALA:CA");
-	atomTypes.push_back("ALA:O");
-	atomTypes.push_back("ALA:N");
-	atomTypes.push_back("GLY:C");
-	atomTypes.push_back("GLY:CA");
-	atomTypes.push_back("GLY:O");
-	atomTypes.push_back("GLY:N");
-	atomTypes.push_back("HIS:C");
-	atomTypes.push_back("HIS:CE1");
-	atomTypes.push_back("HIS:CB");
-	atomTypes.push_back("HIS:CA");
-	atomTypes.push_back("HIS:CG");
-	atomTypes.push_back("HIS:O");
-	atomTypes.push_back("HIS:N");
-	atomTypes.push_back("HIS:CD2");
-	atomTypes.push_back("HIS:ND1");
-	atomTypes.push_back("HIS:NE2");
-	atomTypes.push_back("GLU:C");
-	atomTypes.push_back("GLU:CB");
-	atomTypes.push_back("GLU:CA");
-	atomTypes.push_back("GLU:CG");
-	atomTypes.push_back("GLU:O");
-	atomTypes.push_back("GLU:N");
-	atomTypes.push_back("GLU:OE2");
-	atomTypes.push_back("GLU:CD");
-	atomTypes.push_back("GLU:OE1");
-	atomTypes.push_back("LEU:C");
-	atomTypes.push_back("LEU:CB");
-	atomTypes.push_back("LEU:CA");
-	atomTypes.push_back("LEU:CG");
-	atomTypes.push_back("LEU:O");
-	atomTypes.push_back("LEU:N");
-	atomTypes.push_back("LEU:CD1");
-	atomTypes.push_back("LEU:CD2");
-	atomTypes.push_back("ARG:C");
-	atomTypes.push_back("ARG:CB");
-	atomTypes.push_back("ARG:CA");
-	atomTypes.push_back("ARG:CG");
-	atomTypes.push_back("ARG:NE");
-	atomTypes.push_back("ARG:O");
-	atomTypes.push_back("ARG:CD");
-	atomTypes.push_back("ARG:CZ");
-	atomTypes.push_back("ARG:NH1");
-	atomTypes.push_back("ARG:NH2");
-	atomTypes.push_back("ARG:N");
-	atomTypes.push_back("TRP:C");
-	atomTypes.push_back("TRP:CD1");
-	atomTypes.push_back("TRP:CZ2");
-	atomTypes.push_back("TRP:CB");
-	atomTypes.push_back("TRP:CA");
-	atomTypes.push_back("TRP:CG");
-	atomTypes.push_back("TRP:O");
-	atomTypes.push_back("TRP:N");
-	atomTypes.push_back("TRP:CH2");
-	atomTypes.push_back("TRP:CE3");
-	atomTypes.push_back("TRP:CE2");
-	atomTypes.push_back("TRP:CD2");
-	atomTypes.push_back("TRP:CZ3");
-	atomTypes.push_back("TRP:NE1");
-	atomTypes.push_back("VAL:C");
-	atomTypes.push_back("VAL:CB");
-	atomTypes.push_back("VAL:CA");
-	atomTypes.push_back("VAL:O");
-	atomTypes.push_back("VAL:N");
-	atomTypes.push_back("VAL:CG1");
-	atomTypes.push_back("VAL:CG2");
-	atomTypes.push_back("ASN:C");
-	atomTypes.push_back("ASN:CB");
-	atomTypes.push_back("ASN:CA");
-	atomTypes.push_back("ASN:CG");
-	atomTypes.push_back("ASN:O");
-	atomTypes.push_back("ASN:N");
-	atomTypes.push_back("ASN:OD1");
-	atomTypes.push_back("ASN:OT1");
-	atomTypes.push_back("ASN:ND2");
-	atomTypes.push_back("TYR:C");
-	atomTypes.push_back("TYR:CE1");
-	atomTypes.push_back("TYR:OH");
-	atomTypes.push_back("TYR:CB");
-	atomTypes.push_back("TYR:CA");
-	atomTypes.push_back("TYR:CG");
-	atomTypes.push_back("TYR:O");
-	atomTypes.push_back("TYR:N");
-	atomTypes.push_back("TYR:CZ");
-	atomTypes.push_back("TYR:CD1");
-	atomTypes.push_back("TYR:CD2");
-	atomTypes.push_back("TYR:CE2");
-	atomTypes.push_back("MET:C");
-	atomTypes.push_back("MET:CB");
-	atomTypes.push_back("MET:CA");
-	atomTypes.push_back("MET:CG");
-	atomTypes.push_back("MET:CE");
-	atomTypes.push_back("MET:N");
-	atomTypes.push_back("MET:O");
-	atomTypes.push_back("MET:SD");
-	
   
   if (trajs.size() > 0)
   {
@@ -417,7 +243,7 @@ int main (int argc, char **argv){
     /* instantiate LARMORD */
     mol=Molecule::readPDB(pdbs.at(0));
     mol->selAll();
-    larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true);
+    larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true,moltype);
         
     /* Process trajectories */
     for (itrj=0; itrj< trajs.size(); itrj++)
@@ -496,10 +322,10 @@ int main (int argc, char **argv){
 									if(process==1)
 									{
 										std:: cout << "ID resname resid nucleus expCS ";
-										for (k=0; k< atomTypes.size(); k++){
-											key=atomTypes.at(k);
+										for (k=0; k< larm->atomTypes.size(); k++){
+											key=larm->atomTypes.at(k);
 											std::cout << key;
-											if (k != atomTypes.size()-1 ){
+											if (k != larm->atomTypes.size()-1 ){
 												std::cout << " ";
 											}
 										}
@@ -507,16 +333,16 @@ int main (int argc, char **argv){
 									} 
 									// print histogram
 									std:: cout << identification << " " << resname << " " << residID << " " <<  nucleus << " " << expcs << " "; 
-									for (k=0; k< atomTypes.size(); k++)
+									for (k=0; k< larm->atomTypes.size(); k++)
 									{
-										key=atomTypes.at(k);
+										key=larm->atomTypes.at(k);
 										if (histo.find(key) != histo.end()){
 											std::cout << histo.at(key);
 										}
 										else{
 											std::cout << "0";
 										}
-										if (j != atomTypes.size()-1){
+										if (j != larm->atomTypes.size()-1){
 											std::cout << " ";
 										}
 									}
@@ -545,7 +371,7 @@ int main (int argc, char **argv){
     for (f=0; f< pdbs.size(); f++)
     {  
       mol=Molecule::readPDB(pdbs.at(f));
-      larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true);
+      larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true,moltype);
       
       //std::cerr << "Processing file \"" << pdbs.at(f) << "..." << std::endl;
       /* get distance matrix */
@@ -601,10 +427,10 @@ int main (int argc, char **argv){
 						if(process==1)
 						{
 							std:: cout << "ID resname resid nucleus expCS ";
-							for (k=0; k< atomTypes.size(); k++){
-								key=atomTypes.at(k);
+							for (k=0; k< larm->atomTypes.size(); k++){
+								key=larm->atomTypes.at(k);
 								std::cout << key;
-								if (k != atomTypes.size()-1 ){
+								if (k != larm->atomTypes.size()-1 ){
 									std::cout << " ";
 								}
 							}
@@ -612,16 +438,16 @@ int main (int argc, char **argv){
 						} 
 						// print histogram
 						std:: cout << identification << " " << resname << " " << residID << " " <<  nucleus << " " << expcs << " "; 
-						for (k=0; k< atomTypes.size(); k++)
+						for (k=0; k< larm->atomTypes.size(); k++)
 						{
-							key=atomTypes.at(k);
+							key=larm->atomTypes.at(k);
 							if (histo.find(key) != histo.end()){
 								std::cout << histo.at(key);
 							}
 							else{
 								std::cout << "0";
 							}
-							if (j != atomTypes.size()-1){
+							if (j != larm->atomTypes.size()-1){
 								std::cout << " ";
 							}
 						}

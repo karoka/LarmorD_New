@@ -30,16 +30,18 @@ class LARMORD {
          std::map<std::string,double> experimentalCS; 
          std::map<std::string,double> errorCS; 
          std::map<std::string,double> accuracy_weight;
-         std::map<std::string,double> correlation_weight;
+         std::map<std::string,double> correlation_weight;         
          bool residueBasedLarmor;
          bool residueBasedWeightsLarmor;
          bool mismatchCheckLarmor; 
+         std::string MolTypeLamor;
     public:
-        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="", const std::string fcorfile="", bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false, bool extractor=false);
+        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="", const std::string fcorfile="", bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false, bool extractor=false, const std::string MolType="protein");
         void initializeShiftAtoms();
         void initializeRandomShifts();
         void initializeAlpha();
         void initializeAccuracyWeight();
+        void initializeAtomTypes();
         bool getShiftAtom(const std::string &key);
         double getRandomShift(const std::string &key);
         std::vector<double> getAlpha (const std::string &key);
@@ -55,5 +57,6 @@ class LARMORD {
         void loadRefFile(const std::string freffile);
         void loadAccFile(const std::string faccfile);
         void loadCorrFile(const std::string fcorrfile);
+        std::vector<std::string> atomTypes;
 };
 #endif

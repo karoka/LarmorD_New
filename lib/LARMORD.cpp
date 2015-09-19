@@ -408,6 +408,10 @@ void LARMORD::renameRes(Molecule *mol)
 
 void LARMORD::initializeShiftAtoms()
 {
+    this->shiftAtoms.insert(std::pair<std::string,bool>("P",true));
+    this->shiftAtoms.insert(std::pair<std::string,bool>("O3'",true));
+    this->shiftAtoms.insert(std::pair<std::string,bool>("O5'",true));
+    this->shiftAtoms.insert(std::pair<std::string,bool>("O4'",true));    
     this->shiftAtoms.insert(std::pair<std::string,bool>("H1'",true));
     this->shiftAtoms.insert(std::pair<std::string,bool>("H2'",true));
     this->shiftAtoms.insert(std::pair<std::string,bool>("H3'",true));

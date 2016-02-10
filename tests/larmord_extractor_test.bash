@@ -11,6 +11,6 @@ then
   echo "TEST PASSED"
   rm extractor_test.log diff_extractor_test.log
 else
-  echo "TEST FAILED (see tests/extractor_test.log tests/diff_extractor_test.log)"
+  echo "TEST FAILED (see tests/extractor_test.log)"
 fi
 

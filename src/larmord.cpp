@@ -41,7 +41,8 @@ void usage(){
   std::cerr << "         [-residueSelection]" << std::endl;
   std::cerr << "         [-nucleusSelection]" << std::endl;
   std::cerr << "         [-residueBasedWeights]" << std::endl;  
-  std::cerr << "         [-mismatchCheck]" << std::endl;  
+  std::cerr << "         [-mismatchCheck]" << std::endl; 
+  std::cerr << "         [-ring] [-cutoffRing (9999.0 Å)]" << std::endl;   
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
   std::cerr << "         [-identification ID]" << std::endl;
@@ -110,8 +111,10 @@ int main (int argc, char **argv){
   double errorCS=0.0;
   double tau;
   std::vector<double> cs_C1,cs_C2,cs_CA1,cs_CA2,cs_CB1,cs_CB2,cs_N1,cs_N2,cs_HA1,cs_HA2,cs_H1,cs_H2;
-
   std::vector<std::vector<double> > neighborDistances;
+  bool ringCurrent=false;
+  double cutoffRing=9999.9;
+    
 
   Molecule *neighbormol;
   neighbormol=NULL;
@@ -233,6 +236,13 @@ int main (int argc, char **argv){
       currArg=argv[++i];
       std::stringstream(currArg) >> cutoff;
     }
+    else if (currArg.compare("-cutoffRing") == 0){
+      currArg=argv[++i];
+      cutoffRing = atof(currArg.c_str());
+    }   
+    else if (currArg.compare("-ring") == 0){
+      ringCurrent = true;
+    }    
     else if (currArg.compare("-skip") == 0)
     {
       currArg=argv[++i];

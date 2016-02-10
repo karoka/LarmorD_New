@@ -2442,11 +2442,6 @@ double LARMORD::jb_geo(const Coor point, const Coor normal)
 
 void LARMORD::setUpRings(Molecule *mol)
 {
-<<<<<<< HEAD
-  this->renameRes(mol);
-=======
-  //this->renameRes(mol);
->>>>>>> heavy_atoms
   std::stringstream resid;
   std::string sele1,sele2;
   std::string resname;  

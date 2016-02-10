@@ -418,6 +418,18 @@ void Select::initKeys(Molecule *mol){
   selKeysAtm["ACCEPTOR"]="";
   selKeysAtm["HBOND"]="N.3 N.2 N.pl3 N.4 N.ar N.am O.2 O.3 S.3";
 
+  //NMR Atoms
+  selKeysAtm["NMR"]="C1' C2' C3' C4' C5' C2 C5 C6 C8 H1' H2' H3' H4' H5' H5'' H2 H5 H6 H8 N1 N3 H1 H3 C CA CB CD CD1 CD2 CE CE1 CE2 CE3 CG CG1 CG2 CH2 CZ CZ2 CZ3 H HA HA2 HA3 HB HB2 HB3 HD1 HD2 HD21 HD22 HD3 HE HE1 HE2 HE21 HE22 HE3 HG HG1 HG12 HG13 HG2 HG3 HH HH11 HH12 HH2 HH21 HH22 HZ HZ2 HZ3 N ND1 ND2 NE NE1 NE2 NH1 NH2 NZ";
+
+  //RNA Atoms
+  selKeysAtm["RNABASE"]="N1 C2 N3 C4 C5 C6 N7 C8 N9";
+  
+  //Ring5 Atoms
+  selKeysAtm["RING5"]="C4 C5 N7 C8 N9 CG CD2 NE2 CE1 ND1 CG CD1 NE1 CE2 CD2";
+  //Ring6 Atoms
+  selKeysAtm["RING6"]="N1 C2 N3 C4 C5 C6 CG CD2 CE2 NE2 CE1 CZ CH2 CZ2 CZ3 CE1 ND1 CD1 CE3";
+
+
   selKeysAtm["HEAVY"]="";
   selKeysAtm["HYDROGEN"]="";
   selKeysAtm["OXYGEN"]="";
@@ -486,7 +498,7 @@ void Select::initKeys(Molecule *mol){
   selKeysRes["HYDROPHOBIC"]="ALA VAL LEU ILE PHE GLY PRO CYS CYX MET TRP";
   selKeysRes["POLAR"]="SER THR TYR ASN GLN";
   selKeysRes["TITRATABLE"]="ASP GLU HIS HSP HSD HSE CYS TYR LYS ARG";
-  selKeysRes["NUCLEIC"]="ADE THY CYT GUA URA A T C G U DA DT DC DG DU RG RG3 RG5 RU RU3 RU5 RA RA3 RA5 RU RU3 RU5 DG3 DG5 DU3 DU5 DA3 DA5 DU3 DU5 DT DT3 DT5";
+  selKeysRes["NUCLEIC"]="ADE THY CYT GUA URA A T C G U DA DT DC DG DU RC RC3 RC5 RG RG3 RG5 RU RU3 RU5 RA RA3 RA5 RU RU3 RU5 DG3 DG5 DU3 DU5 DA3 DA5 DU3 DU5 DT DT3 DT5";
   selKeysRes["PURINE"]="ADE GUA A G DA DG RG RA RG3 RA3 RG5 RA5 DG3 DA3 DG5 DA5";
   selKeysRes["PYRIMIDINE"]="CYT URA THY C U T DC DU DT RC RU RC3 RU3 RC5 RU5 DC3 DU3 DT3 DC5 DU5 DT5";
   selKeysRes["WATER"]="TIP3 TIP HOH SPC SPCE TIP4 TIP5";
@@ -494,12 +506,23 @@ void Select::initKeys(Molecule *mol){
   selKeysRes["ION"]="MG NA CL K SOD CLA CLM NAP";
   selKeysRes["SOLVENT"]="MG NA CL K SOD CLA CLM NAP TIP3 TIP HOH SPC SPCE TIP4 TIP5";
   selKeysRes["TERMINI"]="ACE ACP AHE CT2 NME CT3 FOR";
+  selKeysRes["AROMATICS"]="T A U C G ADE DA DA3 DA5 DA3 RA RA3 RA5 RA3 URA DU DU3 DU5 DU3 RU RU3 RU5 RU3 CYT DC DC3 DC5 DC3 RC RC3 RC5 RC3 GUA DG DG3 DG5 DG3 RG RG3 RG5 RG3 THY DT DT3 DT5 DT3 RT RT3 RT5 RT3 PHE F TYR Y HIS HID HIE HIP HSD HSE HSP H";  
+  selKeysRes["ADENINES"]="A ADE DA DA3 DA5 DA3 RA RA3 RA5 RA3";
+  selKeysRes["URIDINES"]="U URA DU DU3 DU5 DU3 RU RU3 RU5 RU3";
+  selKeysRes["CYTOSINES"]="C CYT DC DC3 DC5 DC3 RC RC3 RC5 RC3";
+  selKeysRes["GUANINES"]="G GUA DG DG3 DG5 DG3 RG RG3 RG5 RG3";
+  selKeysRes["THYMINES"]="T THY DT DT3 DT5 DT3 RT RT3 RT5 RT3";
+  selKeysRes["PHENYLALANINES"]="PHE F";
+  selKeysRes["TYROSINES"]="TYR Y";
+  selKeysRes["TRYPTOPHANS"]="TRP W";
+  selKeysRes["HISTIDINES"]="HIS H HID HIE HIP HSD HSE HSP";
 
   //Replace spaces with "+"
   std::replace(selKeysAtm["BACKBONE"].begin(), selKeysAtm["BACKBONE"].end(), ' ', '+');
   std::replace(selKeysAtm["SIDECHAIN"].begin(), selKeysAtm["SIDECHAIN"].end(), ' ', '+');
   std::replace(selKeysAtm["SUGAR"].begin(), selKeysAtm["SUGAR"].end(), ' ', '+');
   std::replace(selKeysAtm["BASE"].begin(), selKeysAtm["BASE"].end(), ' ', '+');
+  std::replace(selKeysAtm["NMR"].begin(), selKeysAtm["NMR"].end(), ' ', '+');  
   std::replace(selKeysAtm["HBOND"].begin(), selKeysAtm["HBOND"].end(), ' ', '+');
   std::replace(selKeysAtm["HEAVY"].begin(), selKeysAtm["HEAVY"].end(), ' ', '+');
   std::replace(selKeysAtm["HYDROGEN"].begin(), selKeysAtm["HYDROGEN"].end(), ' ', '+');
@@ -510,6 +533,8 @@ void Select::initKeys(Molecule *mol){
   std::replace(selKeysAtm["SULPHUR"].begin(), selKeysAtm["SULPHUR"].end(), ' ', '+');
   std::replace(selKeysAtm["PHOSPHORUS"].begin(), selKeysAtm["PHOSPHORUS"].end(), ' ', '+');
   std::replace(selKeysAtm["PHOSPHOROUS"].begin(), selKeysAtm["PHOSPHOROUS"].end(), ' ', '+');
+  std::replace(selKeysAtm["RING5"].begin(), selKeysAtm["RING5"].end(), ' ', '+');
+  std::replace(selKeysAtm["RING6"].begin(), selKeysAtm["RING6"].end(), ' ', '+');
 
   std::replace(selKeysRes["HETERO"].begin(), selKeysRes["HETERO"].end(), ' ', '+');
   std::replace(selKeysRes["PEPTIDE"].begin(), selKeysRes["PEPTIDE"].end(), ' ', '+');
@@ -528,6 +553,16 @@ void Select::initKeys(Molecule *mol){
   std::replace(selKeysRes["ION"].begin(), selKeysRes["ION"].end(), ' ', '+');
   std::replace(selKeysRes["SOLVENT"].begin(), selKeysRes["SOLVENT"].end(), ' ', '+');
   std::replace(selKeysRes["TERMINI"].begin(), selKeysRes["TERMINI"].end(), ' ', '+');
+  std::replace(selKeysRes["ADENINES"].begin(), selKeysRes["ADENINES"].end(), ' ', '+');
+  std::replace(selKeysRes["URIDINES"].begin(), selKeysRes["URIDINES"].end(), ' ', '+');
+  std::replace(selKeysRes["CYTOSINES"].begin(), selKeysRes["CYTOSINES"].end(), ' ', '+');
+  std::replace(selKeysRes["GUANINES"].begin(), selKeysRes["GUANINES"].end(), ' ', '+');
+  std::replace(selKeysRes["THYMINES"].begin(), selKeysRes["THYMINES"].end(), ' ', '+');
+  std::replace(selKeysRes["PHENYLALANINES"].begin(), selKeysRes["PHENYLALANINES"].end(), ' ', '+');
+  std::replace(selKeysRes["TYROSINES"].begin(), selKeysRes["TYROSINES"].end(), ' ', '+');  
+  std::replace(selKeysRes["TRYPTOPHANS"].begin(), selKeysRes["TRYPTOPHANS"].end(), ' ', '+');
+  std::replace(selKeysRes["HISTIDINES"].begin(), selKeysRes["HISTIDINES"].end(), ' ', '+');  
+  std::replace(selKeysRes["AROMATICS"].begin(), selKeysRes["AROMATICS"].end(), ' ', '+');  
   
 }
 

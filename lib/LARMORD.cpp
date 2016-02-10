@@ -11,12 +11,19 @@
 #include "LARMORD.hpp"
 #include "Molecule.hpp"
 #include "Misc.hpp"
+#include "Coor.hpp"
+#include "Residue.hpp"
+#include "Atom.hpp"
+#include "Coor.hpp"
+#include "Select.hpp"
+#include "Analyze.hpp"
 
 #include <fstream>
 #include <stdlib.h>
+#include <math.h>
 
 
-LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, const std::string fcorfile,  bool residueBased, bool residueBasedWeights, bool mismatchCheck, bool extractor, std::string MolType)
+LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string fparmfile, const std::string freffile, const std::string faccfile, const std::string fcorfile,  bool residueBased, bool residueBasedWeights, bool mismatchCheck, bool extractor, std::string MolType, bool ringCurrent, double cutoffRing)
 {
     /* nuclei for which chemical shifts will be calculated */
     this->initializeShiftAtoms();    
@@ -40,7 +47,6 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
         this->loadAccFile(faccfile);
         //std::cout << "done with accuracy weights..." << std::endl;
     }
-    
     
     if (fparmfile.length()==0){
         if (!extractor){
@@ -70,7 +76,22 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
     if (fcorfile.length() > 0){
         this->loadCorrFile(fcorfile);
     }
-            
+
+		/* set up ring separation */
+		ringSeparation = 1.28;
+
+		/* set cutoff */
+		cutoffLarmorRing=cutoffRing;
+	
+		/* setUp aromatics resname keys */
+		this->setUpAromaticsResKeys();
+
+		/* setUp ringIntensity map */
+		ringCurrentLarmor = ringCurrent;
+		if (ringCurrentLarmor == true){
+			this->setUpRingIntensityMap();		
+			std::cout << "Setting up maps.." << std::endl;
+		}								                
 }
 
 std::vector<double> LARMORD::getAlpha(const std::string &key)
@@ -274,7 +295,6 @@ void LARMORD::loadAccFile(const std::string faccfile)
 	}
 }
 
-
 void LARMORD::loadCorrFile(const std::string fcorrfile)
 {
 	std::ifstream corrFile;
@@ -300,7 +320,6 @@ void LARMORD::loadCorrFile(const std::string fcorrfile)
 		}
 	}
 }
-
 
 int LARMORD::getNShiftAtoms()
 {
@@ -2326,3 +2345,200 @@ void LARMORD::initializeAtomTypes()
 		this->atomTypes.push_back("CYT:O2");	
 	}
 }
+
+double LARMORD::ellintk (double m)
+{
+    double mr1 = 1.0 - m;
+    double mr2 = mr1*mr1;
+    double mr3 = mr2*mr1;
+    double mr4 = mr3*mr1;
+    double ad = 1.38629436112 + 0.09666344259*mr1 + 0.03590092383*mr2 +
+               0.03742563713*mr3 + 0.01451196212*mr4;
+    double bd = 0.5 + 0.12498593597*mr1 + 0.06880248576*mr2 +
+               0.03328355346*mr3 + 0.00441787012*mr4;
+    return (ad + bd * log (1.0 / mr1));
+}
+
+double LARMORD::ellinte (double m)
+{
+    /* ellinte, calculates the E factor of the elliptical integral
+       expects 0<=m<1 as input. This function was difined from formula 17.3.36
+       Abramowitz and Segun, Handbook of Mathematical Functions, 
+       Dover publications 1965
+    */
+    double mr1 = 1.0 - m;
+    double mr2 = mr1*mr1;
+    double mr3 = mr2*mr1;
+    double mr4 = mr3*mr1;
+    double ad = 1.0 + 0.44325141463*mr1 + 0.06260601220*mr2 +
+    0.04757383546*mr3 + 0.01736506451*mr4;
+    double bd = 0.24998368310*mr1 + 0.09200180037*mr2 +
+    0.04069697526*mr3 + 0.00526449639*mr4;
+    return (ad + bd * log (1.0 / mr1));
+}
+
+Coor LARMORD::base_plane_normal(Molecule *base)
+{
+    /* check if number of residues is get than one */
+    Coor a;
+    Coor b;
+    a = base->getAtom(2)->getCoor() - base->getAtom(0)->getCoor();
+    b = base->getAtom(4)->getCoor() - base->getAtom(0)->getCoor();
+    return (b.cross(a));
+}
+
+double LARMORD::ringCurrentCompute(const Coor point)
+{
+  double rc = 0.0;
+  double intensity;
+  Coor com1;
+  Coor norm;
+  Coor f;
+  /* loop over all ring */
+  for (unsigned int i=0;i<this->ringCenterOfMass.size();i++){   
+    /* get vector between point and com of ring */
+    com1 = this->ringCenterOfMass.at(i);
+    norm = this->ringNormal.at(i);
+    intensity = this->ringIntensity.at(i);    
+    f = point-com1;
+    
+    //std::cout << sqrt(f.dot(f)) << std::endl;
+    if(sqrt(f.dot(f)) > this->cutoffLarmorRing) continue;
+    
+    rc += intensity*jb_geo(f,norm); 
+  }
+  return (rc);  
+}
+
+double LARMORD::jb_geo(const Coor point, const Coor normal)
+{
+  /* z, distance above the plane */
+  /* rho, projected distance on plane */
+  double jb;
+  double k;
+  double z,z2;
+  double rho,rho2;
+
+  z = fabs(point.dot(normal))+(ringSeparation/2);
+  z2 = z*z;
+  
+  rho = (point-(normal*(point.dot(normal)))).norm();
+  rho2 = rho*rho;
+  k = sqrt((4*rho/(pow((1+rho),2)+z2)));
+  jb = -1*(sqrt((1/(pow((1+rho),2)+z2)))*(this->ellintk(k)+this->ellinte(k)*((1-rho2-z2)/(pow((1-rho),2)+z2))));
+  
+  //std::cout << "z = " << z << std::endl;
+  //std::cout << "rho = " << rho << std::endl;
+  //std::cout << "k = " << k << std::endl;
+  //std::cout << "ellintk = " << this->ellintk(k) << std::endl;
+  //std::cout << "ellinte = " << this->ellinte(k) << std::endl;
+  //create a unit test
+  //coor1 =  Coor(1.000,2.000,3.000);
+    //coor2 =  Coor(4.000,5.000,6.000);
+    //this->jb_geo(coor1,coor2)      
+    //answer should be: -0.000310637
+  return (jb);
+}
+
+void LARMORD::setUpRings(Molecule *mol)
+{
+  this->renameRes(mol);
+  std::stringstream resid;
+  std::string sele1,sele2;
+  std::string resname;  
+  Molecule *tmpmol, *cmol;
+  Residue *res;
+  Coor coor, cog; 
+  double rc;
+  for (unsigned int h=0; h < this->aromaticsResKeys.size();h++){
+    sele1 = ":"+this->aromaticsResKeys.at(h)+".";
+    mol->select(sele1,false,false);    
+    if (mol->getNAtomSelected()>0){
+      tmpmol= mol->copy();
+      for (unsigned int i=0; i < tmpmol->getResVecSize();i++){
+        resid.str(""); //Clear stringstream
+        res=tmpmol->getResidue(i);
+        resid << res->getResId();
+        resname = res->getResName();
+        rc = this->getRingIntensity(this->aromaticsResKeys.at(h)+":RING6");
+        if(rc!=0.0){
+          sele2 = ":"+resid.str()+".RING6";
+          tmpmol->select(sele2);
+          cmol= tmpmol->copy();
+          this->ringNormal.push_back(this->base_plane_normal(cmol));
+          this->ringCenterOfMass.push_back(Analyze::centerOfGeometry(cmol));
+          this->ringIntensity.push_back(rc);  
+        }
+        rc = this->getRingIntensity(this->aromaticsResKeys.at(h)+":RING5");     
+        if(rc!=0.0){
+          sele2 = ":"+resid.str()+".RING5";
+          tmpmol->select(sele2);
+          cmol= tmpmol->copy();
+          this->ringNormal.push_back(this->base_plane_normal(cmol));
+          this->ringCenterOfMass.push_back(Analyze::centerOfGeometry(cmol));
+          this->ringIntensity.push_back(rc);  
+        }
+      }
+    } 
+  }
+}
+
+void LARMORD::setUpAromaticsResKeys()
+{
+  this->aromaticsResKeys.push_back("ADENINES");
+  this->aromaticsResKeys.push_back("URIDINES");
+  this->aromaticsResKeys.push_back("CYTOSINES");
+  this->aromaticsResKeys.push_back("GUANINES");
+  this->aromaticsResKeys.push_back("THYMINES");
+  this->aromaticsResKeys.push_back("PHENYLALANINES");
+  this->aromaticsResKeys.push_back("TYROSINES");
+  this->aromaticsResKeys.push_back("TRYPTOPHANS");
+  this->aromaticsResKeys.push_back("HISTIDINES");
+}
+
+void LARMORD::setUpRingIntensityMap()
+{
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("ADENINES:RING6",0.90));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("URIDINES:RING6",0.11));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("CYTOSINES:RING6",0.28));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("GUANINES:RING6",0.30));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("THYMINES:RING6",0.11));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("PHENYLALANINES:RING6",1.00));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("TYROSINES:RING6",0.94));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("TRYPTOPHANS:RING6",1.04));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("HISTIDINES:RING6",0.53));    
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("ADENINES:RING5",0.66));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("GUANINES:RING5",0.64));
+  //this->ringIntensityMap.insert(std::pair<std::string,double>("TRYPTOPHANS:RING5",0.56));   
+
+  /* Case, 1995 */  
+  this->ringIntensityMap.insert(std::pair<std::string,double>("ADENINES:RING6",0.83));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("URIDINES:RING6",0.24));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("CYTOSINES:RING6",0.31));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("GUANINES:RING6",0.49));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("THYMINES:RING6",0.28));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("PHENYLALANINES:RING6",1.27));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("TYROSINES:RING6",1.10));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("TRYPTOPHANS:RING6",1.27));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("HISTIDINES:RING6",1.40));    
+  this->ringIntensityMap.insert(std::pair<std::string,double>("ADENINES:RING5",0.95));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("GUANINES:RING5",0.81));
+  this->ringIntensityMap.insert(std::pair<std::string,double>("TRYPTOPHANS:RING5",1.02));       
+}
+
+double LARMORD::getRingIntensity(const std::string &key)
+{
+    if (this->ringIntensityMap.find (key) == this->ringIntensityMap.end()){
+        return 0.0;
+    } else {
+        return (this->ringIntensityMap.at(key));
+    }
+}
+
+void LARMORD::clearRings()
+{
+	 this->ringIntensity.clear();
+	 this->ringNormal.clear();
+	 this->ringCenterOfMass.clear();
+}
+

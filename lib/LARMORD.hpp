@@ -20,6 +20,7 @@
 
 /* Forward Declaration  (only valid for pointers and references) */
  class Molecule;
+ class Coor;
 
 class LARMORD {
     private:
@@ -35,8 +36,18 @@ class LARMORD {
          bool residueBasedWeightsLarmor;
          bool mismatchCheckLarmor; 
          std::string MolTypeLamor;
+         
+         std::map<std::string,double> ringIntensityMap;
+         std::vector<double> ringIntensity;
+         std::vector<Coor> ringNormal;
+         std::vector<Coor> ringCenterOfMass;
+         std::vector<std::string> aromaticsResKeys;
+         double ringSeparation;
+         bool ringCurrentLarmor;
+         double cutoffLarmorRing;
+         
     public:
-        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="", const std::string fcorfile="", bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false, bool extractor=false, const std::string MolType="protein");
+        LARMORD (Molecule *mol=NULL, const std::string fchemshift="",const std::string fparmfile="",const std::string freffile="",const std::string faccfile="", const std::string fcorfile="", bool residueBased=false, bool residueBasedWeights=false, bool mismatchCheck=false, bool extractor=false, const std::string MolType="protein", bool ringCurrent=false, double cutoffRing=9999.9);
         void initializeShiftAtoms();
         void initializeRandomShifts();
         void initializeAlpha();
@@ -58,5 +69,17 @@ class LARMORD {
         void loadAccFile(const std::string faccfile);
         void loadCorrFile(const std::string fcorrfile);
         std::vector<std::string> atomTypes;
+
+        /* for calculating ring current effects */
+        void setUpAromaticsResKeys();
+        void setUpRingIntensityMap();
+        void setUpRings(Molecule *mol);
+        double ellintk(const double m);
+        double ellinte(const double m);
+        Coor base_plane_normal(Molecule *base);
+        double ringCurrentCompute(const Coor point);
+        double jb_geo(const Coor point, const Coor normal);  
+        double getRingIntensity(const std::string &key);
+        void clearRings();                            
 };
 #endif

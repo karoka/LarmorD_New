@@ -37,6 +37,7 @@ void usage(){
   std::cerr << "         [-rna]" << std::endl;
   std::cerr << "         [-residueSelection]" << std::endl;
   std::cerr << "         [-nucleusSelection]" << std::endl;
+  std::cerr << "         [-ring] [-cutoffRing (9999.0 Å)]" << std::endl;     
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
   std::cerr << "         [-identification ID]" << std::endl;
@@ -90,9 +91,11 @@ int main (int argc, char **argv){
   double expcs;
   double cutoff;
   
-
   std::vector<std::vector<double> > neighborDistances;
-
+ 	bool ringCurrent=false;
+  double cutoffRing=9999.9;
+  double ringc;
+ 
   Molecule *neighbormol;
   neighbormol=NULL;
   
@@ -153,6 +156,13 @@ int main (int argc, char **argv){
       currArg=argv[++i];
       std::stringstream(currArg) >> cutoff;
     }
+    else if (currArg.compare("-cutoffRing") == 0){
+      currArg=argv[++i];
+      cutoffRing = atof(currArg.c_str());
+    }   
+    else if (currArg.compare("-ring") == 0){
+      ringCurrent = true;
+    }    
     else if (currArg.compare("-beta") == 0)
     {
       currArg=argv[++i];
@@ -243,7 +253,7 @@ int main (int argc, char **argv){
     /* instantiate LARMORD */
     mol=Molecule::readPDB(pdbs.at(0));
     mol->selAll();
-    larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true,moltype);
+    larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true,moltype,ringCurrent,cutoffRing);
         
     /* Process trajectories */
     for (itrj=0; itrj< trajs.size(); itrj++)
@@ -276,6 +286,11 @@ int main (int argc, char **argv){
             
             mol->select(":.HEAVY");
             neighbormol= mol->copy();
+
+						if(ringCurrent == true){
+							larm->clearRings();	
+							larm->setUpRings(mol);	
+						}
          
 						for (unsigned int j=0; j< mol->getAtmVecSize(); j++)
 						{
@@ -289,6 +304,12 @@ int main (int argc, char **argv){
 								key = resid.str()+":"+resname+":"+nucleus;
 								resid.str("");            
 								expcs = larm->getExperimentalCS(key);
+
+								// ring current effect
+								ringc = 0.0;
+								if(ringCurrent == true){
+									ringc = larm->ringCurrentCompute(ai->getCoor());
+								}          								
 								//std::cout << key << expcs << std::endl;
 								isResidue = std::find(selected_residues.begin(),selected_residues.end(),ai->getResId())!= selected_residues.end();
 								isNucleus = std::find(selected_nuclei.begin(),selected_nuclei.end(),ai->getAtmName()) != selected_nuclei.end();
@@ -321,7 +342,7 @@ int main (int argc, char **argv){
 									// print header
 									if(process==1)
 									{
-										std:: cout << "frame ID resname resid nucleus expCS ";
+										std:: cout << "frame ID resname resid nucleus expCS ringCurrent";
 										for (k=0; k< larm->atomTypes.size(); k++){
 											key=larm->atomTypes.at(k);
 											std::cout << key;
@@ -332,7 +353,7 @@ int main (int argc, char **argv){
 										std::cout << std::endl;  
 									} 
 									// print histogram
-									std:: cout << nframe << " " << identification << " " << resname << " " << residID << " " <<  nucleus << " " << expcs << " "; 
+									std:: cout << nframe << " " << identification << " " << resname << " " << residID << " " <<  nucleus << " " << expcs << " " << ringc << " "; 
 									for (k=0; k< larm->atomTypes.size(); k++)
 									{
 										key=larm->atomTypes.at(k);
@@ -371,7 +392,7 @@ int main (int argc, char **argv){
     for (f=0; f< pdbs.size(); f++)
     {  
       mol=Molecule::readPDB(pdbs.at(f));
-      larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true,moltype);
+      larm = new LARMORD(mol,fchemshift,"","","","",false,false,false,true,moltype,ringCurrent,cutoffRing);
       
       //std::cerr << "Processing file \"" << pdbs.at(f) << "..." << std::endl;
       /* get distance matrix */
@@ -381,7 +402,12 @@ int main (int argc, char **argv){
 
       mol->select(":.HEAVY");
       neighbormol= mol->copy();
-            
+ 
+			if(ringCurrent == true){
+				larm->clearRings();	
+				larm->setUpRings(mol);	
+			}
+			            
       for (unsigned int j=0; j< mol->getAtmVecSize(); j++)
       {
         ai = mol->getAtom(j);
@@ -394,6 +420,12 @@ int main (int argc, char **argv){
           key = resid.str()+":"+resname+":"+nucleus;
           resid.str("");            
           expcs = larm->getExperimentalCS(key);
+
+					// ring current effect
+					ringc = 0.0;
+					if(ringCurrent == true){
+						ringc = larm->ringCurrentCompute(ai->getCoor());
+					}          
           //std::cout << key << expcs << std::endl;
           isResidue = std::find(selected_residues.begin(),selected_residues.end(),ai->getResId())!= selected_residues.end();
           isNucleus = std::find(selected_nuclei.begin(),selected_nuclei.end(),ai->getAtmName()) != selected_nuclei.end();
@@ -404,7 +436,7 @@ int main (int argc, char **argv){
 						histo.clear();        																	
 						if(true)
 						{
-							ainx = ai->getAtmInx();
+							ainx = ai->getAtmInx();							
 							for (unsigned int l=0; l < neighbormol->getAtmVecSize(); l++)
 							{
 								aj = neighbormol->getAtom(l);
@@ -426,7 +458,7 @@ int main (int argc, char **argv){
 						// print header
 						if(process==1)
 						{
-							std:: cout << "frame ID resname resid nucleus expCS ";
+							std:: cout << "frame ID resname resid nucleus expCS ringCurrent ";
 							for (k=0; k< larm->atomTypes.size(); k++){
 								key=larm->atomTypes.at(k);
 								std::cout << key;
@@ -437,7 +469,7 @@ int main (int argc, char **argv){
 							std::cout << std::endl;  
 						} 
 						// print histogram
-						std:: cout << f << " " << identification << " " << resname << " " << residID << " " <<  nucleus << " " << expcs << " "; 
+						std:: cout << f << " " << identification << " " << resname << " " << residID << " " <<  nucleus << " " << expcs << " " << ringc << " "; 
 						for (k=0; k< larm->atomTypes.size(); k++)
 						{
 							key=larm->atomTypes.at(k);

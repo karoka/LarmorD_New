@@ -90,7 +90,7 @@ LARMORD::LARMORD (Molecule *mol, const std::string fchemshift, const std::string
 		ringCurrentLarmor = ringCurrent;
 		if (ringCurrentLarmor == true){
 			this->setUpRingIntensityMap();		
-			std::cout << "Setting up maps.." << std::endl;
+			//std::cout << "Setting up maps.." << std::endl;
 		}								                
 }
 

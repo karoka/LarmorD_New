@@ -116,8 +116,8 @@ int main (int argc, char **argv){
   bool ringCurrent=false;
   double cutoffRing=9999.9;
   double ringc;
+  bool noselfshift=false;
     
-
   Molecule *neighbormol;
   neighbormol=NULL;
   
@@ -195,6 +195,10 @@ int main (int argc, char **argv){
     else if (currArg.compare("-mismatchCheck") == 0 )
     {
 				mismatchCheck=true;
+    }    
+    else if (currArg.compare("-noself") == 0 )
+    {
+				noselfshift=true;
     }    
     else if (currArg.compare("-printError") == 0 )
     {
@@ -420,6 +424,8 @@ int main (int argc, char **argv){
 										for (unsigned int l=0; l < neighbormol->getAtmVecSize(); l++)
 										{
 											aj = neighbormol->getAtom(l);
+											if(ai->getResId() == aj->getResId() && noselfshift == true)
+												continue;
 											if(ai!=aj){
 												if (residue_based)
 												{

@@ -41,7 +41,8 @@ void usage(){
   std::cerr << "         [-residueSelection]" << std::endl;
   std::cerr << "         [-nucleusSelection]" << std::endl;
   std::cerr << "         [-residueBasedWeights]" << std::endl;  
-  std::cerr << "         [-mismatchCheck]" << std::endl; 
+  std::cerr << "         [-mismatchCheck]" << std::endl;
+  std::cerr << "         [-noself]" << std::endl; 
   std::cerr << "         [-ring] [-cutoffRing (9999.0 Å)]" << std::endl;   
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  

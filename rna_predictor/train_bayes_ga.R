@@ -5,12 +5,18 @@ option_list <- list(
               help="identification code [default %default]"),
   make_option(c("--mcmc_cycles"), type="integer", default=20000,
               help="number of mcmc optimization cycles [default %default]"),
+  make_option(c("--mcmc_seed"), type="integer", default=12345,
+              help="random number seed used for MCMC optimization [default %default]"),
   make_option(c("--ga_cycles"), type="integer", default=100,
               help="number of GA optimization cycles [default %default]"),
-  make_option(c("--ga_populations"), type="integer", default=25,
+  make_option(c("--ga_populations"), type="integer", default=10,
               help="number of GA populations to evolve [default %default]"),
-  make_option(c("--ga_std"), type="double", default=2.0,
+  make_option(c("--ga_std"), type="double", default=3.0,
               help="the number of standard deviation (in the mcmc) parameters that is to be used to limit the GA search space around the bayesian parameters [default %default]"),
+  make_option(c("--ga_rmsd_threshold"), type="double", default=2.5,
+              help="threshold value used to designate native and non-native decoys [default %default]"),
+  make_option(c("--ga_seed"), type="integer", default=12345,
+              help="random number seed used for GA optimization [default %default]"),
   make_option(c("--verbose"), action="store_true", default=FALSE,
               help="print header and progress information [default %default]")
 )
@@ -35,9 +41,12 @@ if(length(arguments$args) != 2) {
   decoydatafile <- arguments$args[2]
   output_parameters <- options$output_parameters
   mcmc_cycles <- options$mcmc_cycles
+  mcmc_seed <- options$mcmc_seed
   ga_cycles <- options$ga_cycles
   ga_std <- options$ga_std
   ga_populations <- options$ga_populations
+  ga_rmsd_threshold <- options$ga_rmsd_threshold
+  ga_seed <- options$ga_seed
 
   # load needed libraries
   suppressPackageStartupMessages(library("plyr"))
@@ -56,15 +65,15 @@ if(length(arguments$args) != 2) {
   y <- decoy_data$y
   X <- decoy_data$X
   INFO <- decoy_data$INFO
-  
+    
   # train preliminary bayesian model by minimizing the error between actual and measured chemical shifts
-  bayesian_model <- runBayesian(train,mcmc_cycles)
+  bayesian_model <- runBayesian(train, mcmc_cycles, mcmc_seed)
   
   # refine preliminary bayesian model maximizing the ability to resolve native from non-native conformations in a decoy pool
-  refined_bayesian_model <- runGA(trainy, y, trainx, X, bayesian_model, INFO, ga_cycles = ga_cycles, population_size = ga_populations, std = ga_std)
+  refined_bayesian_model <- runGA(trainy, y, trainx, X, bayesian_model, INFO, cycles = ga_cycles, population_size = ga_populations, std = ga_std, rmsd_threshold = ga_rmsd_threshold, seed = ga_seed)
   
   # output model to file
-  write.table(refined_bayesian_model, file = output_parameters, col.names = FALSE, row.names = FALSE, quote = FALSE)
+  write.table(refined_bayesian_model, file = output_parameters, col.names = TRUE, row.names = FALSE, quote = FALSE)
   if(options$verbose)
     print(refined_bayesian_model)
 }

@@ -68,7 +68,7 @@ compute_mae_score <- function(w,y,X){
   1/mae(y,yy)
 }
 
-compute_slr_score <- function(w,y,X,INFO){
+compute_slr_score <- function(w, y, X, INFO, rmsd_threshold = 2.5, testing = FALSE, key = "Training"){
   # Helper function to compute SLR score
   # Args:
   #   w: weights -- vector
@@ -76,6 +76,8 @@ compute_slr_score <- function(w,y,X,INFO){
   #   y: actual chemical shifts for models in the conformational decoy pool -- vector
   #   X: structure features used to compute chemical shifts for models in conformational decoy pool -- data matrix
   #   INFO: information about model in the decoy pools -- data frame
+  #   rmsd_thresold: threshold value used to designate native and non-native decoys -- double
+  #   testing: whether to run in validation mode (if yes, return the SLR data over individual systems) -- bool
   # Returns:
   #   returns: the mean SLR obtained when using the MAE between actual and computed chemical shifts to separate models in the decoy pools
   INFO$expCS <- y
@@ -83,11 +85,32 @@ compute_slr_score <- function(w,y,X,INFO){
   results <- ddply(.dat=INFO,.var=c("ID","frame","rmsd"),.fun=function(x){mae(x$predCS,x$expCS)})
   results <- results[order(results$V1),]
   results$status <- 0
-  results$status[results$rmsd<2.5] <- 1
-  mean(ddply(.dat=results,.var=c("ID"),.fun=function(x){SLR(x)})$V1)
+  results$status[results$rmsd<rmsd_threshold] <- 1
+  if(testing){
+    results <- ddply(.dat=results,.var=c("ID"),.fun=function(x){summarize_rmsd_slr(x)})
+    mean <- data.frame(ID = "MEAN", SLR = mean(results$SLR), min_rmsd = mean(results$min_rmsd), mean_rmsd = mean(results$mean_rmsd) )
+    results <- rbind(results, mean)
+    results$KEY <- key
+    results
+  } else {
+    results <- ddply(.dat=results,.var=c("ID"),.fun=function(x){SLR(x)})
+    mean(results$V1)  
+  }
 }
 
-fitness <- function(w,trainy,trainx,y,X,INFO){
+summarize_rmsd_slr <- function(x){
+  # Helper function that report statisitics summarizing the ability to resolution native and non-native decoys
+  # Args:
+  #   x: comformational decoy data -- data frame
+  # Returns:
+  #   returns:  SLR, minimum rmsd, and mean rmsd -- data frame
+  mean_rmsd <- mean(head(x,5)$rmsd)
+  min_rmsd <- mean(head(x,1)$rmsd)
+  SLR <- SLR(x)
+  return(data.frame(SLR=round(SLR,3), min_rmsd = round(min_rmsd,3), mean_rmsd = round(mean_rmsd,3)))
+}
+
+fitness <- function(w,trainy,trainx,y,X,INFO,rmsd_threshold=2.5){
   # Helper function to the overall fitness for GA
   # Args:
   #   w: weights -- vector
@@ -96,10 +119,11 @@ fitness <- function(w,trainy,trainx,y,X,INFO){
   #   y: actual chemical shifts for models in the conformational decoy pool -- vector
   #   X: structure features used to compute chemical shifts for models in conformational decoy pool -- data matrix
   #   INFO: information about model in the decoy pools -- data frame
+  #   rmsd_threshold: threshold value used to designate native and non-native decoys (passed to compute_slr_score) -- double
   # Returns:
   #   returns: the sum of the  of the MAE and SLR scores 
-  compute_slr_score(w,y,X,INFO) + compute_mae_score(w,trainy,trainx)
-  compute_slr_score(w,y,X,INFO) 
+  #compute_slr_score(w,y,X,INFO,rmsd_threshold) + compute_mae_score(w,trainy,trainx)
+  compute_slr_score(w,y,X,INFO,rmsd_threshold)
 }
 
 load_training_data <- function(datafile,skip=0){
@@ -129,6 +153,8 @@ get_ga_train_data <- function(train){
   return(list(trainy=train[,1],trainx=data.matrix(train[,c(-1,-2)])))
 }
 
+xnames <- c("resnameG","resnameA","resnameC","resnameU","ringCurrent","GUA.C1p","GUA.C2p","GUA.C3p","GUA.C4p","GUA.C5p","GUA.P","GUA.O5p","GUA.O3p","GUA.C2","GUA.C4","GUA.C5","GUA.C6","GUA.C8","GUA.N1","GUA.N2","GUA.N3","GUA.N7","GUA.N9","GUA.O6","ADE.C1p","ADE.C2p","ADE.C3p","ADE.C4p","ADE.C5p","ADE.P","ADE.O5p","ADE.O3p","ADE.C2","ADE.C4","ADE.C5","ADE.C6","ADE.C8","ADE.N1","ADE.N3","ADE.N6","ADE.N7","ADE.N9","URA.C1p","URA.C2p","URA.C3p","URA.C4p","URA.C5p","URA.P","URA.O5p","URA.O3p","URA.C2","URA.C4","URA.C5","URA.C6","URA.N1","URA.N3","URA.O4","CYT.C1p","CYT.C2p","CYT.C3p","CYT.C4p","CYT.C5p","CYT.P","CYT.O5p","CYT.O3p","CYT.C2","CYT.C4","CYT.C5","CYT.C6","CYT.N1","CYT.N3","CYT.N4","CYT.O2")
+
 load_decoy_data <- function(datafile,skip=0){
   # Helper function to load training data used to derive parameters for model
   # Args:
@@ -146,7 +172,7 @@ load_decoy_data <- function(datafile,skip=0){
   return(list(INFO=INFO,X=X,y=y))
 }
 
-get_bayesian_parameters <- function(mcmc,xnames=c("resnameG","resnameA","resnameC","resnameU","ringCurrent","GUA.C1p","GUA.C2p","GUA.C3p","GUA.C4p","GUA.C5p","GUA.P","GUA.O5p","GUA.O3p","GUA.C2","GUA.C4","GUA.C5","GUA.C6","GUA.C8","GUA.N1","GUA.N2","GUA.N3","GUA.N7","GUA.N9","GUA.O6","ADE.C1p","ADE.C2p","ADE.C3p","ADE.C4p","ADE.C5p","ADE.P","ADE.O5p","ADE.O3p","ADE.C2","ADE.C4","ADE.C5","ADE.C6","ADE.C8","ADE.N1","ADE.N3","ADE.N6","ADE.N7","ADE.N9","URA.C1p","URA.C2p","URA.C3p","URA.C4p","URA.C5p","URA.P","URA.O5p","URA.O3p","URA.C2","URA.C4","URA.C5","URA.C6","URA.N1","URA.N3","URA.O4","CYT.C1p","CYT.C2p","CYT.C3p","CYT.C4p","CYT.C5p","CYT.P","CYT.O5p","CYT.O3p","CYT.C2","CYT.C4","CYT.C5","CYT.C6","CYT.N1","CYT.N3","CYT.N4","CYT.O2")){
+get_bayesian_parameters <- function(mcmc){
   # Helper function to retrive the model parameters from MCMC object
   # Args:
   #   mcmc: MCMC fitting object  -- MCMC object
@@ -163,20 +189,21 @@ get_bayesian_parameters <- function(mcmc,xnames=c("resnameG","resnameA","resname
   return(paras)
 }
 
-runBayesian <- function(train,mcmc_cycles,formula=expCS~ringCurrent+resnameG+resnameA+resnameC+resnameU+GUA.C1p+GUA.C2p+GUA.C3p+GUA.C4p+GUA.C5p+GUA.P+GUA.O5p+GUA.O3p+GUA.C2+GUA.C4+GUA.C5+GUA.C6+GUA.C8+GUA.N1+GUA.N2+GUA.N3+GUA.N7+GUA.N9+GUA.O6+ADE.C1p+ADE.C2p+ADE.C3p+ADE.C4p+ADE.C5p+ADE.P+ADE.O5p+ADE.O3p+ADE.C2+ADE.C4+ADE.C5+ADE.C6+ADE.C8+ADE.N1+ADE.N3+ADE.N6+ADE.N7+ADE.N9+URA.C1p+URA.C2p+URA.C3p+URA.C4p+URA.C5p+URA.P+URA.O5p+URA.O3p+URA.C2+URA.C4+URA.C5+URA.C6+URA.N1+URA.N3+URA.O4+CYT.C1p+CYT.C2p+CYT.C3p+CYT.C4p+CYT.C5p+CYT.P+CYT.O5p+CYT.O3p+CYT.C2+CYT.C4+CYT.C5+CYT.C6+CYT.N1+CYT.N3+CYT.N4+CYT.O2+0 ){
+runBayesian <- function(train, cycles, seed, formula=expCS~ringCurrent+resnameG+resnameA+resnameC+resnameU+GUA.C1p+GUA.C2p+GUA.C3p+GUA.C4p+GUA.C5p+GUA.P+GUA.O5p+GUA.O3p+GUA.C2+GUA.C4+GUA.C5+GUA.C6+GUA.C8+GUA.N1+GUA.N2+GUA.N3+GUA.N7+GUA.N9+GUA.O6+ADE.C1p+ADE.C2p+ADE.C3p+ADE.C4p+ADE.C5p+ADE.P+ADE.O5p+ADE.O3p+ADE.C2+ADE.C4+ADE.C5+ADE.C6+ADE.C8+ADE.N1+ADE.N3+ADE.N6+ADE.N7+ADE.N9+URA.C1p+URA.C2p+URA.C3p+URA.C4p+URA.C5p+URA.P+URA.O5p+URA.O3p+URA.C2+URA.C4+URA.C5+URA.C6+URA.N1+URA.N3+URA.O4+CYT.C1p+CYT.C2p+CYT.C3p+CYT.C4p+CYT.C5p+CYT.P+CYT.O5p+CYT.O3p+CYT.C2+CYT.C4+CYT.C5+CYT.C6+CYT.N1+CYT.N3+CYT.N4+CYT.O2+0 ){
   # Helper function that runs a Bayesian regression to general initial parameters for model
   # Args:
   #   train: training database -- data frame
-  #  mcmc_cycles: number of MCMC optimization cycles -- integer
+  #   cycles: number of MCMC optimization cycles -- integer
+  #   seed: random number used by MCMC optimization -- integer
   # Returns:
   #   returns: resulting model parameters -- data frame
   start <- rep(0,ncol(train)-2)
-  start[1:5] <- 1
-  mcmc <- MCMCregress(formula,data=as.data.frame(train),verbose=TRUE,marginal.likelihood="Chib95", b0 = 0, B0 = 0.1, c0 = 2, d0 = 0.11, beta.start = start, mcmc=mcmc_cycles, burnin=5000)
+  start[1:5] <- 1 # make more general
+  mcmc <- MCMCregress(formula, data = as.data.frame(train), verbose = TRUE, marginal.likelihood = "Chib95", b0 = 0, B0 = 0.1, c0 = 2, d0 = 0.11, beta.start = start, mcmc = cycles, burnin = 5000, seed = seed)
   get_bayesian_parameters(mcmc)
 }
 
-runGA <- function(trainy,y,trainx,X,bayesian_model,INFO,ga_cycles=100,population_size=25,std=2){
+runGA <- function(trainy, y, trainx, X, bayesian_model, INFO, cycles = 100, population_size = 25, std = 2, rmsd_threshold = 2.5, seed = 12345){
   # Helper function that runs GA regression to general refined parameters for model
   # Args:
   #   trainy: actual chemical shifts for training data -- vector
@@ -186,6 +213,8 @@ runGA <- function(trainy,y,trainx,X,bayesian_model,INFO,ga_cycles=100,population
   #   bayesian_model: the initial Bayesian parameters -- data frame
   #   cycles (optional): optimization cycles -- integer
   #   populationSize (optional): population or number of solutions to evolve -- integer
+  #   rmsd_threshold: threshold value used to designate native and non-native decoys (passed to compute_slr_score) -- double
+  #   seed: random number seed -- double  
   # Returns:
   #   returns: resulting model parameters -- data frame
   ncomponents <- ncol(trainx)
@@ -193,8 +222,8 @@ runGA <- function(trainy,y,trainx,X,bayesian_model,INFO,ga_cycles=100,population
   N <- ncomponents
   lower <- bayesian_model$para - std*bayesian_model$spread
   upper <- bayesian_model$para + std*bayesian_model$spread
-  initialSolution <- matrix(bayesian_model$para,ncol=ncomponents,nrow=population_size,byrow=T)
-  GA <- ga(type="real",fitness=fitness, suggestions=initialSolution, min = lower, max = upper, popSize=population_size, maxiter=ga_cycles,keepBest=T,seed=12345,trainy=trainy,trainx=trainx,y=y,X=X,INFO=INFO)
+  initialSolution <- matrix(bayesian_model$para, ncol = ncomponents, nrow = population_size, byrow = T)
+  GA <- ga(type = "real", fitness = fitness, suggestions = initialSolution, min = lower, max = upper, seed = seed, popSize = population_size, maxiter = cycles, keepBest = TRUE, trainy = trainy, trainx = trainx, y = y, X = X, INFO = INFO, rmsd_threshold = rmsd_threshold)
   bayesian_model$ga <- GA@solution[1,]
   return(bayesian_model)
 }

@@ -8,7 +8,7 @@ for rna in $rnas
 do
 	[[ $i == 1 ]] && bash extract_features.bash $rna  | tee train_features.txt 
 	[[ $i != 1 ]] && bash extract_features.bash $rna | grep -v frame | tee -a train_features.txt	
-	i=999
+	i=999	
 done
 
 i=1
@@ -20,3 +20,8 @@ do
 	[[ $i != 1 ]] && bash extract_features.bash $rna  | grep -v frame | tee -a test_features.txt
 	i=999
 done
+
+
+#awk '{ if(NF==80) print}' test_features.txt > tmp.txt; mv tmp.txt test_features.txt
+#awk '{ if(NF==80) print}' train_features.txt > tmp.txt; mv tmp.txt train_features.txt
+

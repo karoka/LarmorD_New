@@ -41,7 +41,8 @@ void usage(){
   std::cerr << "         [-residueSelection]" << std::endl;
   std::cerr << "         [-nucleusSelection]" << std::endl;
   std::cerr << "         [-residueBasedWeights]" << std::endl;  
-  std::cerr << "         [-mismatchCheck]" << std::endl; 
+  std::cerr << "         [-mismatchCheck]" << std::endl;
+  std::cerr << "         [-noself]" << std::endl; 
   std::cerr << "         [-ring] [-cutoffRing (9999.0 Å)]" << std::endl;   
   std::cerr << "         [-trj TRAJfile]" << std::endl;
   std::cerr << "         [-skip frames] [-start frame] [-stop frame]" << std::endl;  
@@ -65,6 +66,7 @@ int main (int argc, char **argv){
   std::string fcorfile;
   std::string nucleus;
   std::string resname;
+  std::string resnameCode;  
   std::string atomname;
   std::string key;
   std::string identification;
@@ -114,8 +116,9 @@ int main (int argc, char **argv){
   std::vector<std::vector<double> > neighborDistances;
   bool ringCurrent=false;
   double cutoffRing=9999.9;
+  double ringc;
+  bool noselfshift=false;
     
-
   Molecule *neighbormol;
   neighbormol=NULL;
   
@@ -193,6 +196,10 @@ int main (int argc, char **argv){
     else if (currArg.compare("-mismatchCheck") == 0 )
     {
 				mismatchCheck=true;
+    }    
+    else if (currArg.compare("-noself") == 0 )
+    {
+				noselfshift=true;
     }    
     else if (currArg.compare("-printError") == 0 )
     {
@@ -384,6 +391,15 @@ int main (int argc, char **argv){
               if (larm->getShiftAtom(nucleus)==true)
               {
                 resname = ai->getResName();
+								if(resname == "GUA")
+									resnameCode = "1 0 0 0";
+								if(resname == "ADE")
+									resnameCode = "0 1 0 0";
+								if(resname == "CYT")
+									resnameCode = "0 0 1 0";
+								if(resname == "URA")
+									resnameCode = "0 0 0 1";
+                
                 resid << ai->getResId();
                 key = resid.str()+":"+resname+":"+nucleus;
                 resid.str("");
@@ -400,9 +416,17 @@ int main (int argc, char **argv){
 									if(randcs != 0.0)
 									{
 										ainx = ai->getAtmInx();
+										// ring current effect
+										ringc = 0.0;
+										if(ringCurrent == true){
+											ringc = larm->ringCurrentCompute(ai->getCoor());
+										}          								
+										
 										for (unsigned int l=0; l < neighbormol->getAtmVecSize(); l++)
 										{
 											aj = neighbormol->getAtom(l);
+											if(ai->getResId() == aj->getResId() && noselfshift == true)
+												continue;
 											if(ai!=aj){
 												if (residue_based)
 												{
@@ -560,6 +584,14 @@ int main (int argc, char **argv){
         if (larm->getShiftAtom(nucleus)==true)
         {
           resname = ai->getResName();
+					if(resname == "GUA")
+						resnameCode = "1 0 0 0";
+					if(resname == "ADE")
+						resnameCode = "0 1 0 0";
+					if(resname == "CYT")
+						resnameCode = "0 0 1 0";
+					if(resname == "URA")
+						resnameCode = "0 0 0 1";          
           resid << ai->getResId();
           key = resid.str()+":"+resname+":"+nucleus;  
           resid.str("");        
@@ -576,8 +608,17 @@ int main (int argc, char **argv){
 						if(randcs != 0.0)
 						{
 							ainx = ai->getAtmInx();
+							// ring current effect
+							ringc = 0.0;
+							if(ringCurrent == true){
+								ringc = larm->ringCurrentCompute(ai->getCoor());
+							}          								
+							
 							for (unsigned int l=0; l < neighbormol->getAtmVecSize(); l++){
 								aj = neighbormol->getAtom(l);
+								aj = neighbormol->getAtom(l);
+								if(ai->getResId() == aj->getResId() && noselfshift == true)
+									continue;								
 								if(ai!=aj){
 									if (residue_based)
 									{

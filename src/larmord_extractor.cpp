@@ -352,7 +352,7 @@ int main (int argc, char **argv){
 									// print header
 									if(process==1)
 									{
-										std:: cout << "frame ID resid nucleus expCS randCS resnameG resnameA resnameC resnameU ringCurrent";
+										std:: cout << "frame ID resname resid nucleus expCS randCS resnameG resnameA resnameC resnameU ringCurrent";
 										for (k=0; k< larm->atomTypes.size(); k++){
 											key=larm->atomTypes.at(k);
 											std::cout << key;
@@ -363,7 +363,7 @@ int main (int argc, char **argv){
 										std::cout << std::endl;  
 									} 
 									// print histogram
-									std:: cout << nframe << "   " << identification << "   " << residID << "   " <<  nucleus << "   " << expcs << "   "  << randcs << "   " << resnameCode << "   " << ringc << "   "; 
+									std:: cout << nframe << "   " << identification << "   " << resname << "   " << residID << "   " <<  nucleus << "   " << expcs << "   "  << randcs << "   " << resnameCode << "   " << ringc << "   "; 
 									for (k=0; k< larm->atomTypes.size(); k++)
 									{
 										key=larm->atomTypes.at(k);
@@ -476,7 +476,7 @@ int main (int argc, char **argv){
 						// print header
 						if(process==1)
 						{
-							std:: cout << "frame ID resid nucleus expCS randCS resnameG resnameA resnameC resnameU ringCurrent ";
+							std:: cout << "frame ID resname resid nucleus expCS randCS resnameG resnameA resnameC resnameU ringCurrent ";
 							for (k=0; k< larm->atomTypes.size(); k++){
 								key=larm->atomTypes.at(k);
 								std::cout << key;

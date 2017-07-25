@@ -9,8 +9,7 @@ else
 	
 	# Setup Environment
 	source ~/.bashrc
-	larmorDHome=/Users/atfrank/Dropbox/Documents/GitSoftware/LarmorD_New/
-	dataHome=/Users/atfrank/Dropbox/Documents/Assignment-Testing/Resolving_RNA_Structure_Using_Unassigned_Spectra/assignment_pools/simRNA/chemicalShiftData/
+	larmorDHome=~/GitSoftware/LarmorD_New/
 	
 	# Get native ensemble
 	mkdir -p ${PDB}	
@@ -19,9 +18,7 @@ else
 	models=`seq 1 $models`	
 
   # Get data
-	data=${dataHome}/measured_shifts_${PDB}.dat
-	data_correct=${dataHome}/measured_shifts_corrected_${PDB}.dat  
-	[[ -s ${data_correct} ]] && data=${data_correct}	
+	data=${dataHome}/measured_shifts_corrected_${PDB}.dat  
 	cat $data | sort -n -k2 > ${PDB}/cs_1.txt
 	data=${PDB}/cs_1.txt
   

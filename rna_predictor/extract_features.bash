@@ -29,6 +29,7 @@ else
   for m in $models
   do
   	id=`echo "${PDB}_${m}"`
-  	${larmorDHome}/bin/larmord_extractor -rna -ring -cutoffRing 10.0 -identification ${id} -csfile ${data} -beta -3 -cutoff 9999 ${PDB}/model_${m}.pdb  	
+  	[[ $m == 1 ]] && ${larmorDHome}/bin/larmord_extractor -rna -ring -cutoffRing 10.0 -identification ${id} -csfile ${data} -beta -3 -cutoff 9999 ${PDB}/model_${m}.pdb  	
+  	[[ $m != 1 ]] && ${larmorDHome}/bin/larmord_extractor -rna -ring -cutoffRing 10.0 -identification ${id} -csfile ${data} -beta -3 -cutoff 9999 ${PDB}/model_${m}.pdb  | grep -v frame	
   done
 fi

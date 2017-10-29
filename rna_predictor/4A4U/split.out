@@ -1,0 +1,16 @@
+--2016-02-10 21:46:36--  http://www.rcsb.org/pdb/files/4A4U.pdb
+Resolving www.rcsb.org (www.rcsb.org)... 128.6.70.10
+Connecting to www.rcsb.org (www.rcsb.org)|128.6.70.10|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/plain]
+Saving to: ‘4A4U.pdb’
+
+     0K .......... .......... .......... .......... .......... 29.2K
+    50K .......... .......... .......... .......... .......... 45.4K
+   100K .......... .......... .......... .......... .......... 54.9K
+   150K .......... .......... .......... .......... ..........  100K
+   200K .......... .......... .......... ......                 101K=4.6s
+
+2016-02-10 21:46:41 (51.6 KB/s) - ‘4A4U.pdb’ saved [242433]
+
+4A4U contains 6 models

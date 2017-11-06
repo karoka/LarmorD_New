@@ -23,4 +23,3 @@ do
 		catdcd -o decoy_files/${rna}/decoy_${model}.pdb -otype pdb -s ${inputname}.pdb -stype pdb -first ${i} -last ${i} -pdb ${inputname}.pdb #> /dev/null
 	done
 done	
-

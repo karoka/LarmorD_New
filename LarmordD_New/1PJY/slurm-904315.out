@@ -1,0 +1,1566 @@
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_1.pdb -out:file:silent model_1_min.out -native model_1.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1314609367 seed_offset=0 real_seed=1314609367
+core.init.random: RandomGenerator:init: Normal mode, seed=1314609367 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -231.442     -53.232
+ fa_rep                       0.120      51.960       6.235
+ fa_intra_rep                 0.003     207.237       0.601
+ lk_nonpolar                  0.320       7.323       2.343
+ fa_elec_rna_phos_phos        1.050      -0.200      -0.210
+ ch_bond                      0.420     -79.688     -33.469
+ rna_torsion                  0.100       9.706       0.971
+ rna_sugar_close              0.700       2.482       1.737
+ hbond_sr_bb_sc               0.620      -1.996      -1.238
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -38.332    -130.328
+ geom_sol                     0.620     105.032      65.120
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -141.469
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 23 seconds.
+All atom rmsd: 2.48053e-07 to 2.00126
+Outputting model_1_minimize to silent file: model_1_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_1_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1623455402 seed_offset=0 real_seed=1623455402
+core.init.random: RandomGenerator:init: Normal mode, seed=1623455402 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_1_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_1_min.out
+Extracting: model_1_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_2.pdb -out:file:silent model_2_min.out -native model_2.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-165570850 seed_offset=0 real_seed=-165570850
+core.init.random: RandomGenerator:init: Normal mode, seed=-165570850 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -255.285     -58.715
+ fa_rep                       0.120      86.635      10.396
+ fa_intra_rep                 0.003     181.356       0.526
+ lk_nonpolar                  0.320       4.619       1.478
+ fa_elec_rna_phos_phos        1.050       0.131       0.137
+ ch_bond                      0.420     -77.481     -32.542
+ rna_torsion                  0.100      11.410       1.141
+ rna_sugar_close              0.700       3.483       2.438
+ hbond_sr_bb_sc               0.620      -3.984      -2.470
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -39.364    -133.837
+ geom_sol                     0.620     118.722      73.608
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -137.840
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 13 seconds.
+All atom rmsd: 2.48053e-07 to 1.73567
+Outputting model_2_minimize to silent file: model_2_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_2_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1632608515 seed_offset=0 real_seed=-1632608515
+core.init.random: RandomGenerator:init: Normal mode, seed=-1632608515 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_2_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_2_min.out
+Extracting: model_2_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_3.pdb -out:file:silent model_3_min.out -native model_3.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1300700285 seed_offset=0 real_seed=1300700285
+core.init.random: RandomGenerator:init: Normal mode, seed=1300700285 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -242.612     -55.801
+ fa_rep                       0.120      51.097       6.132
+ fa_intra_rep                 0.003     176.955       0.513
+ lk_nonpolar                  0.320       6.592       2.110
+ fa_elec_rna_phos_phos        1.050      -0.449      -0.471
+ ch_bond                      0.420     -75.198     -31.583
+ rna_torsion                  0.100       8.583       0.858
+ rna_sugar_close              0.700       2.549       1.784
+ hbond_sr_bb_sc               0.620      -2.087      -1.294
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.236    -136.802
+ geom_sol                     0.620     110.484      68.500
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -146.055
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 25 seconds.
+All atom rmsd: 4.96106e-07 to 1.55327
+Outputting model_3_minimize to silent file: model_3_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_3_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=94303175 seed_offset=0 real_seed=94303175
+core.init.random: RandomGenerator:init: Normal mode, seed=94303175 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_3_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_3_min.out
+Extracting: model_3_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_4.pdb -out:file:silent model_4_min.out -native model_4.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=2113997617 seed_offset=0 real_seed=2113997617
+core.init.random: RandomGenerator:init: Normal mode, seed=2113997617 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -242.081     -55.679
+ fa_rep                       0.120      46.348       5.562
+ fa_intra_rep                 0.003     171.545       0.497
+ lk_nonpolar                  0.320       5.250       1.680
+ fa_elec_rna_phos_phos        1.050       0.045       0.047
+ ch_bond                      0.420     -76.361     -32.071
+ rna_torsion                  0.100       9.071       0.907
+ rna_sugar_close              0.700       2.382       1.667
+ hbond_sr_bb_sc               0.620      -1.897      -1.176
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -39.199    -133.278
+ geom_sol                     0.620     111.173      68.927
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -142.915
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 16 seconds.
+All atom rmsd: 3.508e-07 to 2.72469
+Outputting model_4_minimize to silent file: model_4_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_4_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1131970192 seed_offset=0 real_seed=1131970192
+core.init.random: RandomGenerator:init: Normal mode, seed=1131970192 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_4_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_4_min.out
+Extracting: model_4_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_5.pdb -out:file:silent model_5_min.out -native model_5.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-439368490 seed_offset=0 real_seed=-439368490
+core.init.random: RandomGenerator:init: Normal mode, seed=-439368490 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -245.141     -56.382
+ fa_rep                       0.120      44.880       5.386
+ fa_intra_rep                 0.003     183.508       0.532
+ lk_nonpolar                  0.320       7.800       2.496
+ fa_elec_rna_phos_phos        1.050      -0.096      -0.101
+ ch_bond                      0.420     -74.904     -31.460
+ rna_torsion                  0.100      12.758       1.276
+ rna_sugar_close              0.700       3.919       2.744
+ hbond_sr_bb_sc               0.620      -1.441      -0.894
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.512    -137.741
+ geom_sol                     0.620     109.385      67.819
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -146.325
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 20 seconds.
+All atom rmsd: 6.56287e-07 to 2.27957
+Outputting model_5_minimize to silent file: model_5_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_5_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-285625411 seed_offset=0 real_seed=-285625411
+core.init.random: RandomGenerator:init: Normal mode, seed=-285625411 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_5_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_5_min.out
+Extracting: model_5_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_6.pdb -out:file:silent model_6_min.out -native model_6.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=746648947 seed_offset=0 real_seed=746648947
+core.init.random: RandomGenerator:init: Normal mode, seed=746648947 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -239.127     -54.999
+ fa_rep                       0.120      56.577       6.789
+ fa_intra_rep                 0.003     172.832       0.501
+ lk_nonpolar                  0.320       5.251       1.680
+ fa_elec_rna_phos_phos        1.050      -0.504      -0.529
+ ch_bond                      0.420     -73.307     -30.789
+ rna_torsion                  0.100      10.524       1.052
+ rna_sugar_close              0.700       3.068       2.148
+ hbond_sr_bb_sc               0.620      -1.858      -1.152
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.589    -138.003
+ geom_sol                     0.620     110.119      68.274
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -145.026
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 24 seconds.
+All atom rmsd: 5.54663e-07 to 1.84695
+Outputting model_6_minimize to silent file: model_6_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_6_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1134336695 seed_offset=0 real_seed=-1134336695
+core.init.random: RandomGenerator:init: Normal mode, seed=-1134336695 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_6_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_6_min.out
+Extracting: model_6_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_7.pdb -out:file:silent model_7_min.out -native model_7.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=837464596 seed_offset=0 real_seed=837464596
+core.init.random: RandomGenerator:init: Normal mode, seed=837464596 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -259.487     -59.682
+ fa_rep                       0.120      81.224       9.747
+ fa_intra_rep                 0.003     167.593       0.486
+ lk_nonpolar                  0.320       5.688       1.820
+ fa_elec_rna_phos_phos        1.050      -0.253      -0.266
+ ch_bond                      0.420     -75.073     -31.531
+ rna_torsion                  0.100       8.763       0.876
+ rna_sugar_close              0.700       2.777       1.944
+ hbond_sr_bb_sc               0.620      -1.764      -1.094
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -38.335    -130.338
+ geom_sol                     0.620     117.155      72.636
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -135.401
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 11 seconds.
+All atom rmsd: 0 to 1.27039
+Outputting model_7_minimize to silent file: model_7_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_7_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=754006927 seed_offset=0 real_seed=754006927
+core.init.random: RandomGenerator:init: Normal mode, seed=754006927 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_7_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_7_min.out
+Extracting: model_7_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_8.pdb -out:file:silent model_8_min.out -native model_8.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=565162740 seed_offset=0 real_seed=565162740
+core.init.random: RandomGenerator:init: Normal mode, seed=565162740 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -242.778     -55.839
+ fa_rep                       0.120      51.882       6.226
+ fa_intra_rep                 0.003     185.827       0.539
+ lk_nonpolar                  0.320       5.483       1.755
+ fa_elec_rna_phos_phos        1.050      -0.057      -0.060
+ ch_bond                      0.420     -83.688     -35.149
+ rna_torsion                  0.100      10.088       1.009
+ rna_sugar_close              0.700       2.339       1.637
+ hbond_sr_bb_sc               0.620      -0.584      -0.362
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -39.426    -134.050
+ geom_sol                     0.620     107.995      66.957
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -147.338
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 21 seconds.
+All atom rmsd: 2.48053e-07 to 1.46029
+Outputting model_8_minimize to silent file: model_8_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_8_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=298182641 seed_offset=0 real_seed=298182641
+core.init.random: RandomGenerator:init: Normal mode, seed=298182641 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_8_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_8_min.out
+Extracting: model_8_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_9.pdb -out:file:silent model_9_min.out -native model_9.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-553414877 seed_offset=0 real_seed=-553414877
+core.init.random: RandomGenerator:init: Normal mode, seed=-553414877 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -259.769     -59.747
+ fa_rep                       0.120      79.980       9.598
+ fa_intra_rep                 0.003     167.505       0.486
+ lk_nonpolar                  0.320       5.126       1.640
+ fa_elec_rna_phos_phos        1.050       0.136       0.142
+ ch_bond                      0.420     -74.934     -31.472
+ rna_torsion                  0.100       8.578       0.858
+ rna_sugar_close              0.700       1.995       1.396
+ hbond_sr_bb_sc               0.620      -1.772      -1.099
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.128    -136.437
+ geom_sol                     0.620     117.287      72.718
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -141.917
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 12 seconds.
+All atom rmsd: 2.48053e-07 to 1.26426
+Outputting model_9_minimize to silent file: model_9_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_9_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1885637427 seed_offset=0 real_seed=1885637427
+core.init.random: RandomGenerator:init: Normal mode, seed=1885637427 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_9_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_9_min.out
+Extracting: model_9_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_10.pdb -out:file:silent model_10_min.out -native model_10.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-387859963 seed_offset=0 real_seed=-387859963
+core.init.random: RandomGenerator:init: Normal mode, seed=-387859963 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -241.089     -55.451
+ fa_rep                       0.120      45.737       5.488
+ fa_intra_rep                 0.003     175.940       0.510
+ lk_nonpolar                  0.320       5.604       1.793
+ fa_elec_rna_phos_phos        1.050       0.211       0.222
+ ch_bond                      0.420     -74.362     -31.232
+ rna_torsion                  0.100       8.420       0.842
+ rna_sugar_close              0.700       2.351       1.646
+ hbond_sr_bb_sc               0.620       0.000       0.000
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.177    -136.602
+ geom_sol                     0.620     106.285      65.896
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -146.887
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 21 seconds.
+All atom rmsd: 4.2964e-07 to 1.28813
+Outputting model_10_minimize to silent file: model_10_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_10_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1327636221 seed_offset=0 real_seed=-1327636221
+core.init.random: RandomGenerator:init: Normal mode, seed=-1327636221 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_10_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_10_min.out
+Extracting: model_10_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_11.pdb -out:file:silent model_11_min.out -native model_11.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-896647819 seed_offset=0 real_seed=-896647819
+core.init.random: RandomGenerator:init: Normal mode, seed=-896647819 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -240.467     -55.307
+ fa_rep                       0.120      57.807       6.937
+ fa_intra_rep                 0.003     211.502       0.613
+ lk_nonpolar                  0.320       6.025       1.928
+ fa_elec_rna_phos_phos        1.050      -0.023      -0.024
+ ch_bond                      0.420     -77.860     -32.701
+ rna_torsion                  0.100      12.709       1.271
+ rna_sugar_close              0.700       3.693       2.585
+ hbond_sr_bb_sc               0.620      -2.525      -1.566
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -39.439    -134.091
+ geom_sol                     0.620     111.416      69.078
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -141.278
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 21 seconds.
+All atom rmsd: 0 to 2.08879
+Outputting model_11_minimize to silent file: model_11_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_11_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1559474206 seed_offset=0 real_seed=1559474206
+core.init.random: RandomGenerator:init: Normal mode, seed=1559474206 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_11_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_11_min.out
+Extracting: model_11_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_12.pdb -out:file:silent model_12_min.out -native model_12.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1846908870 seed_offset=0 real_seed=-1846908870
+core.init.random: RandomGenerator:init: Normal mode, seed=-1846908870 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -244.250     -56.177
+ fa_rep                       0.120      53.615       6.434
+ fa_intra_rep                 0.003     173.694       0.504
+ lk_nonpolar                  0.320       6.397       2.047
+ fa_elec_rna_phos_phos        1.050       0.368       0.387
+ ch_bond                      0.420     -76.377     -32.078
+ rna_torsion                  0.100      11.779       1.178
+ rna_sugar_close              0.700       2.605       1.824
+ hbond_sr_bb_sc               0.620      -1.029      -0.638
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.123    -136.419
+ geom_sol                     0.620     108.517      67.280
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -145.660
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 22 seconds.
+All atom rmsd: 0 to 1.58542
+Outputting model_12_minimize to silent file: model_12_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_12_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1701763874 seed_offset=0 real_seed=-1701763874
+core.init.random: RandomGenerator:init: Normal mode, seed=-1701763874 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_12_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_12_min.out
+Extracting: model_12_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_13.pdb -out:file:silent model_13_min.out -native model_13.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1980038375 seed_offset=0 real_seed=1980038375
+core.init.random: RandomGenerator:init: Normal mode, seed=1980038375 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -242.521     -55.780
+ fa_rep                       0.120      61.800       7.416
+ fa_intra_rep                 0.003     189.335       0.549
+ lk_nonpolar                  0.320       6.870       2.198
+ fa_elec_rna_phos_phos        1.050      -0.354      -0.372
+ ch_bond                      0.420     -74.763     -31.400
+ rna_torsion                  0.100      12.603       1.260
+ rna_sugar_close              0.700       3.520       2.464
+ hbond_sr_bb_sc               0.620      -1.854      -1.149
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.565    -137.920
+ geom_sol                     0.620     110.370      68.429
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -144.305
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 27 seconds.
+All atom rmsd: 6.07603e-07 to 2.48081
+Outputting model_13_minimize to silent file: model_13_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_13_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1647341764 seed_offset=0 real_seed=1647341764
+core.init.random: RandomGenerator:init: Normal mode, seed=1647341764 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_13_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_13_min.out
+Extracting: model_13_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_14.pdb -out:file:silent model_14_min.out -native model_14.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=458202620 seed_offset=0 real_seed=458202620
+core.init.random: RandomGenerator:init: Normal mode, seed=458202620 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.82 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -252.186     -58.003
+ fa_rep                       0.120      62.518       7.502
+ fa_intra_rep                 0.003     228.681       0.663
+ lk_nonpolar                  0.320       5.397       1.727
+ fa_elec_rna_phos_phos        1.050       0.440       0.462
+ ch_bond                      0.420     -76.196     -32.002
+ rna_torsion                  0.100      13.220       1.322
+ rna_sugar_close              0.700       4.267       2.987
+ hbond_sr_bb_sc               0.620      -2.764      -1.714
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.452    -137.537
+ geom_sol                     0.620     113.318      70.257
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -144.335
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 18 seconds.
+All atom rmsd: 4.96106e-07 to 1.74186
+Outputting model_14_minimize to silent file: model_14_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_14_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1127057894 seed_offset=0 real_seed=-1127057894
+core.init.random: RandomGenerator:init: Normal mode, seed=-1127057894 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_14_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_14_min.out
+Extracting: model_14_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_15.pdb -out:file:silent model_15_min.out -native model_15.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1044488957 seed_offset=0 real_seed=1044488957
+core.init.random: RandomGenerator:init: Normal mode, seed=1044488957 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -241.848     -55.625
+ fa_rep                       0.120      52.432       6.292
+ fa_intra_rep                 0.003     209.390       0.607
+ lk_nonpolar                  0.320       5.889       1.884
+ fa_elec_rna_phos_phos        1.050      -0.223      -0.235
+ ch_bond                      0.420     -77.872     -32.706
+ rna_torsion                  0.100      13.640       1.364
+ rna_sugar_close              0.700       3.638       2.546
+ hbond_sr_bb_sc               0.620      -1.832      -1.136
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -39.493    -134.277
+ geom_sol                     0.620     108.848      67.486
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -143.799
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 20 seconds.
+All atom rmsd: 2.48053e-07 to 2.10832
+Outputting model_15_minimize to silent file: model_15_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_15_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-112494675 seed_offset=0 real_seed=-112494675
+core.init.random: RandomGenerator:init: Normal mode, seed=-112494675 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_15_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_15_min.out
+Extracting: model_15_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_16.pdb -out:file:silent model_16_min.out -native model_16.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-769549137 seed_offset=0 real_seed=-769549137
+core.init.random: RandomGenerator:init: Normal mode, seed=-769549137 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.87 seconds.
+core.io.pose_from_sfr.chirality_resolution: Flipping atom xyz for  OP1 and  OP2 for residue   G
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.io.pose_from_sfr.chirality_resolution: Flipping atom xyz for  OP1 and  OP2 for residue   G
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -244.364     -56.204
+ fa_rep                       0.120      41.238       4.949
+ fa_intra_rep                 0.003     169.111       0.490
+ lk_nonpolar                  0.320       5.880       1.882
+ fa_elec_rna_phos_phos        1.050       0.177       0.186
+ ch_bond                      0.420     -77.652     -32.614
+ rna_torsion                  0.100       9.585       0.959
+ rna_sugar_close              0.700       2.507       1.755
+ hbond_sr_bb_sc               0.620      -1.038      -0.644
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -41.036    -139.523
+ geom_sol                     0.620     111.146      68.910
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -149.854
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 32 seconds.
+All atom rmsd: 6.07603e-07 to 1.24981
+Outputting model_16_minimize to silent file: model_16_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_16_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-612967024 seed_offset=0 real_seed=-612967024
+core.init.random: RandomGenerator:init: Normal mode, seed=-612967024 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_16_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_16_min.out
+Extracting: model_16_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_17.pdb -out:file:silent model_17_min.out -native model_17.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=2125640164 seed_offset=0 real_seed=2125640164
+core.init.random: RandomGenerator:init: Normal mode, seed=2125640164 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -241.353     -55.511
+ fa_rep                       0.120      56.596       6.792
+ fa_intra_rep                 0.003     173.858       0.504
+ lk_nonpolar                  0.320       6.354       2.033
+ fa_elec_rna_phos_phos        1.050      -0.053      -0.055
+ ch_bond                      0.420     -75.475     -31.700
+ rna_torsion                  0.100       8.498       0.850
+ rna_sugar_close              0.700       2.521       1.765
+ hbond_sr_bb_sc               0.620      -2.128      -1.319
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.616    -138.095
+ geom_sol                     0.620     111.406      69.072
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -145.665
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 24 seconds.
+All atom rmsd: 7.44159e-07 to 2.62922
+Outputting model_17_minimize to silent file: model_17_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_17_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=697303654 seed_offset=0 real_seed=697303654
+core.init.random: RandomGenerator:init: Normal mode, seed=697303654 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.86 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_17_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_17_min.out
+Extracting: model_17_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_18.pdb -out:file:silent model_18_min.out -native model_18.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-855862484 seed_offset=0 real_seed=-855862484
+core.init.random: RandomGenerator:init: Normal mode, seed=-855862484 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -247.524     -56.930
+ fa_rep                       0.120      47.705       5.725
+ fa_intra_rep                 0.003     168.436       0.488
+ lk_nonpolar                  0.320       4.389       1.405
+ fa_elec_rna_phos_phos        1.050      -0.065      -0.068
+ ch_bond                      0.420     -75.598     -31.751
+ rna_torsion                  0.100      10.291       1.029
+ rna_sugar_close              0.700       2.564       1.795
+ hbond_sr_bb_sc               0.620      -1.275      -0.791
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.451    -137.535
+ geom_sol                     0.620     111.127      68.899
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -147.735
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 31 seconds.
+All atom rmsd: 2.48053e-07 to 2.84007
+Outputting model_18_minimize to silent file: model_18_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_18_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-2056799987 seed_offset=0 real_seed=-2056799987
+core.init.random: RandomGenerator:init: Normal mode, seed=-2056799987 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_18_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_18_min.out
+Extracting: model_18_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_19.pdb -out:file:silent model_19_min.out -native model_19.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1305109996 seed_offset=0 real_seed=-1305109996
+core.init.random: RandomGenerator:init: Normal mode, seed=-1305109996 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -235.190     -54.094
+ fa_rep                       0.120      56.118       6.734
+ fa_intra_rep                 0.003     168.875       0.490
+ lk_nonpolar                  0.320       6.329       2.025
+ fa_elec_rna_phos_phos        1.050      -0.124      -0.130
+ ch_bond                      0.420     -75.837     -31.851
+ rna_torsion                  0.100      10.369       1.037
+ rna_sugar_close              0.700       2.949       2.064
+ hbond_sr_bb_sc               0.620      -1.801      -1.116
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -39.410    -133.994
+ geom_sol                     0.620     110.111      68.269
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -140.567
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 12 seconds.
+All atom rmsd: 0 to 3.57745
+Outputting model_19_minimize to silent file: model_19_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_19_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=1141975473 seed_offset=0 real_seed=1141975473
+core.init.random: RandomGenerator:init: Normal mode, seed=1141975473 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_19_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_19_min.out
+Extracting: model_19_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_20.pdb -out:file:silent model_20_min.out -native model_20.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1091083890 seed_offset=0 real_seed=-1091083890
+core.init.random: RandomGenerator:init: Normal mode, seed=-1091083890 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.conformation.Conformation: [ WARNING ] Building missing atom ( P  ) at root of residue tree, using stubs:  O5'  C5'  C4'
+This probably means that a torsion angle is being taken from the ideal residue and
+should be further optimized...
+core.scoring.etable: Starting energy table calculation
+core.scoring.etable: smooth_etable: changing atr/rep split to bottom of energy well
+core.scoring.etable: smooth_etable: spline smoothing lj etables (maxdis = 6)
+core.scoring.etable: smooth_etable: spline smoothing solvation etables (max_dis = 6)
+core.scoring.etable: Finished calculating energy tables.
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBPoly1D.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBFadeIntervals.csv
+basic.io.database: Database file opened: scoring/score_functions/hbonds/sp2_elec_params/HBEval.csv
+basic.io.database: Database file opened: scoring/score_functions/carbon_hbond/ch_o_bond_potential.dat
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 1
+protocols.farna.movers.RNA_Minimizer: Orienting 2' hydroxyls...
+protocols.farna.movers.RNA_Minimizer: Minimizing...round= 2
+protocols.farna.movers.RNA_Minimizer: 
+------------------------------------------------------------
+ Scores                       Weight   Raw Score Wghtd.Score
+------------------------------------------------------------
+ fa_atr                       0.230    -246.257     -56.639
+ fa_rep                       0.120      50.059       6.007
+ fa_intra_rep                 0.003     171.480       0.497
+ lk_nonpolar                  0.320       5.616       1.797
+ fa_elec_rna_phos_phos        1.050      -0.220      -0.231
+ ch_bond                      0.420     -74.947     -31.478
+ rna_torsion                  0.100       9.040       0.904
+ rna_sugar_close              0.700       2.842       1.989
+ hbond_sr_bb_sc               0.620      -0.730      -0.453
+ hbond_lr_bb_sc               3.400       0.000       0.000
+ hbond_sc                     3.400     -40.242    -136.821
+ geom_sol                     0.620     107.939      66.922
+ atom_pair_constraint         1.000       0.000       0.000
+ linear_chainbreak            5.000       0.000       0.000
+---------------------------------------------------
+ Total weighted score:                     -147.505
+protocols.farna.movers.RNA_Minimizer: RNA minimizer finished in 29 seconds.
+All atom rmsd: 7.84413e-07 to 3.42172
+Outputting model_20_minimize to silent file: model_20_min.out
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_20_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-461454073 seed_offset=0 real_seed=-461454073
+core.init.random: RandomGenerator:init: Normal mode, seed=-461454073 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+core.io.silent.SilentFileData: Reading all structures from model_20_min.out
+core.io.silent.SilentFileData: Finished reading 1 structures from model_20_min.out
+Extracting: model_20_minimize
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_21.pdb -out:file:silent model_21_min.out -native model_21.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-1917145108 seed_offset=0 real_seed=-1917145108
+core.init.random: RandomGenerator:init: Normal mode, seed=-1917145108 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+core.import_pose.import_pose: File: model_21.pdb not found!
+
+ERROR: Cannot open file "model_21.pdb"
+ERROR:: Exit from: src/core/import_pose/import_pose.cc line: 268
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libutility.so(utility::exit(std::string const&, int, std::string const&, int)+0x341) [0x7f2fca000931]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.5.so(core::import_pose::pose_from_file(core::pose::Pose&, core::chemical::ResidueTypeSet const&, std::string const&, core::import_pose::ImportPoseOptions const&, bool, core::import_pose::FileType)+0x434) [0x7f2fce4aa2c4]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.5.so(core::import_pose::pose_from_file(core::pose::Pose&, core::chemical::ResidueTypeSet const&, std::string const&, bool, core::import_pose::FileType)+0x54) [0x7f2fce4ab894]
+rna_minimize.default.linuxgccrelease() [0x411f02]
+rna_minimize.default.linuxgccrelease() [0x414a74]
+/lib64/libc.so.6(__libc_start_main+0xfd) [0x3e7641ed1d]
+rna_minimize.default.linuxgccrelease() [0x4107e9]
+caught exception 
+
+[ERROR] EXCN_utility_exit has been thrown from: src/core/import_pose/import_pose.cc line: 268
+ERROR: Cannot open file "model_21.pdb"
+
+
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_21_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-591844359 seed_offset=0 real_seed=-591844359
+core.init.random: RandomGenerator:init: Normal mode, seed=-591844359 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.83 seconds.
+
+ERROR: ERROR: Unable to open silent_input file: 'model_21_min.out'
+ERROR:: Exit from: src/core/io/silent/SilentFileData.cc line: 239
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libutility.so(utility::exit(std::string const&, int, std::string const&, int)+0x341) [0x7fc44ffd2931]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::read_tags_fast(std::string const&, utility::vector1<std::string, std::allocator<std::string> >&) const+0x5de) [0x7fc45239b13e]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::read_tags_fast(std::string const&) const+0x3c) [0x7fc45239b37c]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::_read_file(std::string const&, bool)+0x6e) [0x7fc45239fbce]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::read_file(std::string const&)+0x82) [0x7fc4523a0db2]
+rna_extract.default.linuxgccrelease() [0x409b6f]
+rna_extract.default.linuxgccrelease() [0x40a842]
+/lib64/libc.so.6(__libc_start_main+0xfd) [0x3e7641ed1d]
+rna_extract.default.linuxgccrelease() [0x408e19]
+caught exception 
+
+[ERROR] EXCN_utility_exit has been thrown from: src/core/io/silent/SilentFileData.cc line: 239
+ERROR: ERROR: Unable to open silent_input file: 'model_21_min.out'
+
+
+
+Basic usage:  rna_minimize.default.linuxgccrelease  -s <pdb file> 
+              rna_minimize.default.linuxgccrelease  -in:file:silent <silent file> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_minimize.default.linuxgccrelease -s model_22.pdb -out:file:silent model_22_min.out -native model_22.pdb
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=-680778950 seed_offset=0 real_seed=-680778950
+core.init.random: RandomGenerator:init: Normal mode, seed=-680778950 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_minimize.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.85 seconds.
+core.import_pose.import_pose: File: model_22.pdb not found!
+
+ERROR: Cannot open file "model_22.pdb"
+ERROR:: Exit from: src/core/import_pose/import_pose.cc line: 268
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libutility.so(utility::exit(std::string const&, int, std::string const&, int)+0x341) [0x7f5c82703931]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.5.so(core::import_pose::pose_from_file(core::pose::Pose&, core::chemical::ResidueTypeSet const&, std::string const&, core::import_pose::ImportPoseOptions const&, bool, core::import_pose::FileType)+0x434) [0x7f5c86bad2c4]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.5.so(core::import_pose::pose_from_file(core::pose::Pose&, core::chemical::ResidueTypeSet const&, std::string const&, bool, core::import_pose::FileType)+0x54) [0x7f5c86bae894]
+rna_minimize.default.linuxgccrelease() [0x411f02]
+rna_minimize.default.linuxgccrelease() [0x414a74]
+/lib64/libc.so.6(__libc_start_main+0xfd) [0x3e7641ed1d]
+rna_minimize.default.linuxgccrelease() [0x4107e9]
+caught exception 
+
+[ERROR] EXCN_utility_exit has been thrown from: src/core/import_pose/import_pose.cc line: 268
+ERROR: Cannot open file "model_22.pdb"
+
+
+
+Basic usage:  rna_extract.default.linuxgccrelease  -in::file::silent <silent file> -tags <model tag like S_00001> 
+
+ Type -help for full slate of options.
+
+core.init: Rosetta version unknown:exported  from http://www.rosettacommons.org
+core.init: command: rna_extract.default.linuxgccrelease -in:file:silent model_22_min.out
+core.init: 'RNG device' seed mode, using '/dev/urandom', seed=2086075919 seed_offset=0 real_seed=2086075919
+core.init.random: RandomGenerator:init: Normal mode, seed=2086075919 RG_type=mt19937
+core.init: Resolved executable path: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/rna_extract.default.linuxgccrelease
+core.init: Looking for database based on location of executable: /export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/database/
+core.chemical.ResidueTypeSet: Finished initializing fa_standard residue type set.  Created 414 residue types
+core.chemical.ResidueTypeSet: Total time to initialize 0.84 seconds.
+
+ERROR: ERROR: Unable to open silent_input file: 'model_22_min.out'
+ERROR:: Exit from: src/core/io/silent/SilentFileData.cc line: 239
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libutility.so(utility::exit(std::string const&, int, std::string const&, int)+0x341) [0x7f35c39a2931]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::read_tags_fast(std::string const&, utility::vector1<std::string, std::allocator<std::string> >&) const+0x5de) [0x7f35c5d6b13e]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::read_tags_fast(std::string const&) const+0x3c) [0x7f35c5d6b37c]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::_read_file(std::string const&, bool)+0x6e) [0x7f35c5d6fbce]
+/export/apps/rosetta/src/rosetta_src_2016.32.58837_bundle/main/source/build/src/release/linux/2.6/64/x86/gcc/4.4/default/libcore.3.so(core::io::silent::SilentFileData::read_file(std::string const&)+0x82) [0x7f35c5d70db2]
+rna_extract.default.linuxgccrelease() [0x409b6f]
+rna_extract.default.linuxgccrelease() [0x40a842]
+/lib64/libc.so.6(__libc_start_main+0xfd) [0x3e7641ed1d]
+rna_extract.default.linuxgccrelease() [0x408e19]
+caught exception 
+
+[ERROR] EXCN_utility_exit has been thrown from: src/core/io/silent/SilentFileData.cc line: 239
+ERROR: ERROR: Unable to open silent_input file: 'model_22_min.out'
+
+
